@@ -1,0 +1,67 @@
+{% extends 'base.html' %}
+	{% block title %}Register{% endblock %}
+	{% block registro %}
+
+
+	<div class="formulario">
+		<form  method="post" >{% csrf_token %}
+				
+				<center>
+			
+				<table>
+					<tr>
+						<td>Usuario</td>
+						<td>{{ frm.username }}	
+							{{ frm.username.errors }}
+						</td>
+					</tr>
+					<tr>
+						<td>Contraseña</td>
+						<td>{{ frm.password }}
+				{{ frm.password.errors }}</td>
+					</tr>
+					<tr>
+						<td>DNI</td>
+						<td>
+							{{ frm.dni }}
+							{{ frm.dni.errors }}
+						</td>
+					</tr>
+					<tr>
+						<td>Email@</td>
+						<td>
+						{{ frm.email }}
+						{{ frm.email.errors }}
+						</td>
+					</tr>
+					<tr>
+						<td>Nombre</td>
+						<td>
+							{{ frm.first_name }}
+				{{ frm.first_name.errors }}
+						</td>
+					</tr>
+					<tr>
+						<td>Apellido</td>
+						<td>{{ frm.last_name }}
+							{{ frm.last_name.errors }}
+						</td>
+					</tr>
+					<tr>
+						<td>Radio button</td>
+						<td>{{ frm.gender }}
+							{{ frm.gender.errors }}
+						</td>
+					</tr>
+				</table>
+				<button class="btn  btn-default">Registro</button>
+				</center>	
+			</form>
+
+	</div>
+	
+
+		
+			
+		
+	{% endblock%}

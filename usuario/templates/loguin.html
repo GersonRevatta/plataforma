@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+	{% block title%}Loguin{% endblock%}
+	{% block loguin%} 
+		<form method="post">{% csrf_token %}
+		  <center>
+		        <table>
+		          <tr>
+		            <td><label>Usuario</label> </td>
+		            <td>{{c.username}}
+		              {{ c.username.errors }}
+		            </td>
+		          </tr>
+		          <tr> 
+		            <td> <label>Contraseña</label></td>
+		            <td>  {{ c.password }}
+		                  {{ c.password.errors }}
+		            </td>
+		          </tr>
+		        
+		        </table>
+		        <button class="btn btn-default">Iniciar</button>
+		  </center>
+
+		</form>
+	{%endblock%}
