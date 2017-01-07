@@ -9,7 +9,7 @@ from django.template.context_processors import csrf
 from django.http import HttpResponse
 
 
-def registro(request):
+def registro(request): 
 	user=password=''
 	if request.POST:
 		frm = FormularioRegistro(request.POST)

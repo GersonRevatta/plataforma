@@ -17,6 +17,7 @@ from django.conf.urls import url
 from django.contrib import admin
 
 from usuario.views import registro, loguin, logout, index,mostrarCurso
+from almacen.views import creandoCursos
 
 urlpatterns = [
 	url(r'^admin/', admin.site.urls),
@@ -25,4 +26,5 @@ urlpatterns = [
 	url(r'^sesion$',loguin,name="loguin"),
 	url(r'^$',index,name="index"),
 	url(r'^cursos$',mostrarCurso,name="mostrarCurso"),
-]
+	url(r'^addcursos$',creandoCursos,name="creandoCursos"),
+	]

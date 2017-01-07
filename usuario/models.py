@@ -1,21 +1,23 @@
 from django.db import models
 import hashlib
 # Create your models here.
-GENDER_CHOICES = (
-	('s',' student'),
-	('t', 'teacher'))
 
 class usuario (models.Model):
+	STUDENT = 's'
+	TEACHER = 't'
+	GENDER_CHOICES = (
+	(STUDENT,' student'),
+	(TEACHER, 'teacher'))
 	username = models.CharField(max_length=30)
 	password = models.CharField(max_length=64)
 	email =  models.EmailField()
 	first_name = models.CharField(max_length=30)
 	last_name =models.CharField(max_length=30)
 	dni =models.CharField(max_length=8)
-	gender = models.CharField(choices=GENDER_CHOICES, max_length=128,null=True, blank=True)
+	gender = models.CharField(choices=GENDER_CHOICES,default=STUDENT, max_length=128)
 	'''
 	tipo =models.CharField(max_length=16)
-	'''
+	''' 
 	
 	def crear(user,password):
 		s = usuario()
