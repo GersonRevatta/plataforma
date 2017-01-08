@@ -11,6 +11,20 @@
 	              <a href="#" class="btn btn-lg btn-default">Ver Mas</a>
 	            </p>
 	          </div>
-
+			<br>
+	          	<div class="row">
+	          {% for i in alistar  %}
+							
+	          	<div class="col-md-5" style="
+	          	background-image: url('media/{{i.imagen}}');
+	          	background-size: 100% 100%;
+	          	width: 250px;
+	          	height: 300px;
+	          	">	<p>{{ i.name}}</p>
+	          		
+	          	</div>
+	
+				{% endfor %}
+	          </div>
 	         
 	{% endblock %}

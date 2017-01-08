@@ -16,8 +16,11 @@ Including another URLconf
 from django.conf.urls import url
 from django.contrib import admin
 
-from usuario.views import registro, loguin, logout, index,mostrarCurso
+from usuario.views import registro, loguin, logout, index,mostrarCurso , miscursos
 from almacen.views import creandoCursos
+from django.conf import settings
+from django.conf.urls.static import static
+
 
 urlpatterns = [
 	url(r'^admin/', admin.site.urls),
@@ -27,4 +30,9 @@ urlpatterns = [
 	url(r'^$',index,name="index"),
 	url(r'^cursos$',mostrarCurso,name="mostrarCurso"),
 	url(r'^addcursos$',creandoCursos,name="creandoCursos"),
-	]
+	url(r'^my$',miscursos,name="miscursos"),
+]
+
+if settings.DEBUG is True:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+

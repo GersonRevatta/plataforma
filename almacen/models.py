@@ -16,8 +16,10 @@ class Cursos(models.Model):
 
 class Document(models.Model):
 	titulo = models.CharField(max_length=100)
+	descripcion = models.CharField(max_length=100)
 	filename = models.CharField(max_length=100)
-	docfile = models.FileField(upload_to='document/%Y/%m/%d')
+	curso = models.ForeignKey(Cursos,null=True, blank=True)
+	docfile = models.FileField(upload_to='document/')
 
 
 

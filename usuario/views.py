@@ -7,7 +7,7 @@ from django.core.urlresolvers import reverse
 from django.template.context_processors import csrf
 # Create your views here.
 from django.http import HttpResponse
-
+from almacen.models import Cursos
 
 def registro(request): 
 	user=password=''
@@ -74,8 +74,8 @@ def logout(request):
 		del request.session['userr']
 	except KeyError:
 		pass
-
-	return HttpResponse('Saliendo de session ')
+	return  HttpResponseRedirect(reverse('index'))
+	
 
 
 
@@ -92,15 +92,23 @@ def index(request):
 
 	
 def mostrarCurso(request):
-	try:
+	try:		
 		lis = usuario.objects.get(username=request.session['userr'])
-		
-		return render(request,'cursos.html', {'lis':lis})
+		if lis.gender == 't':
+			return render(request,'cursos.html', {'lis':lis})
+		ls = Cursos.objects.all()	
 	except :
 			pass
-		
-	return HttpResponseRedirect(reverse('loguin'))
+	return render(request,'cursos.html', {'ls':ls})	
 	
+def miscursos(request):
+	try:
+		listar = usuario.objects.get(username=request.session['userr'])
+		alistar = Cursos.objects.filter(usuario=listar)
+	except:
+		pass
+	return	render(request,'miscursos.html',{'alistar':alistar})	
+
 	
 ''' 
 mejorar esto y hacer filtro con los cursos de cada 

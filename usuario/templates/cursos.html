@@ -2,20 +2,41 @@
 {% block content %}
 
 
+
 	          <div class="inner cover">
-	            <h1 class="cover-heading">Mis cursoso <b>{{ request.session.userr  }}</b></h1>
+	            <h1 class="cover-heading">hola <b>{{ request.session.userr  }}</b></h1>
 	            <p class="lead">Aqui se muestran los cursos disponibles
 	            eres un 
-	            {{  lis.gender }}
-	            <p class="lead">
-	              <a href="#" class="btn btn-lg btn-default">Agregar curso</a>
 	            </p>
-	            
-	            
+	            {%  if lis.gender == 't' %}
+	            <p class="lead">
+	              <a  class="btn btn-lg btn-default" onclick="window.location.href='/addcursos'" >Agregar curso</a>
 	            </p>
 	            <p class="lead">
-	              <a href="#" class="btn btn-lg btn-default">Ver Mas</a>
+	              <a  class="btn btn-lg btn-default" onclick="window.location.href='/my'" >
+	              	Mis Cursos
+	              </a>
 	            </p>
+	            {% endif %}
+	            
+	            
+	            
+	          </div>
+	       
+
+	          <div class="row">
+	          {% for i in ls  %}
+	          	<div class="col-md-1 " style="
+	          	background-image: url('media/{{i.imagen}}');
+	          	background-size: 100% 100%;
+	          	width: 50px;
+	          	height: 300px;
+	          	">	
+	          	
+
+	          	</div>
+	          	
+				{% endfor %}
 	          </div>
 
 	         

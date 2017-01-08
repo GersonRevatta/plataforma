@@ -3,7 +3,7 @@ from .form import cursos
 from django.http import HttpResponseRedirect
 from django.http import HttpResponse
 from usuario.models import usuario
-
+from django.core.urlresolvers import reverse
 def creandoCursos(request):
 	if request.POST:
 		frm=cursos(request.POST,request.FILES)
@@ -15,8 +15,8 @@ def creandoCursos(request):
 				pass
 			a.save()
 		
-		#return HttpResponseRedirect(reverse('uploads'))
-		return HttpResponse('curso agregado')
+		return HttpResponseRedirect(reverse('miscursos'))
+		#return HttpResponse('curso agregado')
 		
 	else:
 		frm = cursos()
