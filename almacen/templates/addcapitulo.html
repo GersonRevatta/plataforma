@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+</head>
+<body>
+<form method="post" enctype="multipart/form-data" >
+{% csrf_token %}
+				
+				<table>
+					<tr>
+						<td>Titulo del capitulo</td>
+						<td>{{ frm.titulo }}	
+							{{ frm.titulo.errors }}
+						</td>
+					</tr>
+					<tr>
+						<td>Nombre del archivo</td>
+						<td>{{ frm.filename }}	
+							{{ frm.filename.errors }}
+						</td>
+					</tr>
+					<tr>
+						<td>Descripcion del capitulo</td>
+						<td>{{ frm.descripcion }}	
+							{{ frm.descripcion.errors }}
+						</td>
+					</tr>
+					<tr>
+						<td>Selecionar Archivo multimedia</td>
+						<td>{{ frm.docfile }}	
+							{{ frm.docfile.errors }}
+						</td>
+					</tr>
+				</table>
+				 <input type="submit" value="Submit">
+	
+</form>
+
+</body>
+</html>
+
+
+
+

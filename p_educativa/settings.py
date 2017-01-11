@@ -126,7 +126,13 @@ STATICFILES_DIRS = (
     os.path.join(BASE_DIR, 'static'),
 )
 
+#formulario de contacto
+#configuracion para envio de gmail
 
-
-
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_HOST_USER = 'jordyrevatta99@gmail.com'
+EMAIL_HOST_PASSWORD = 'hwyhsloybdlxnyls'
+EMAIL_USE_TLS = True
 

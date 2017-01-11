@@ -1,0 +1,53 @@
+
+{% extends 'base.html' %}
+	{% block title%}Contacto{% endblock%}
+	{% block content %}
+
+				<center>
+					
+			            <p class="lead">
+			             Somos Cursos.com... nos contactaremos a la brevedad 
+			            </p>
+			          
+					
+				</center>
+				
+				
+				<center>
+					
+				<div  class="comentario">
+					
+
+					<form class="form_" method="post">
+					{% csrf_token %}
+				
+				
+					<table>
+						<tr>
+							<td>Correo</td>
+							<td>{{ formulario.correo }}	
+								{{ formulario.correo.errors }}
+							</td>
+						</tr>
+						<tr>
+							<td>Mensaje a enviar </td>
+							<td class="mensaje" >{{formulario.mensaje}}
+								{{ formulario.mensaje.errors}}
+							</td>
+						</tr>
+					</table>
+					<br>
+						<input class="btn btn-lg btn-default aj" type="submit" value="Enviar">
+					</form>
+					
+				</div>
+					
+				</center>
+
+					
+				
+					
+				
+
+	         
+	{% endblock %}

@@ -16,12 +16,12 @@ Including another URLconf
 from django.conf.urls import url
 from django.contrib import admin
 
-from usuario.views import registro, loguin, logout, index,mostrarCurso , miscursos
-from almacen.views import creandoCursos
+from usuario.views import registro, loguin, logout, index,mostrarCurso , miscursos , mostrar ,contactomail
+from almacen.views import creandoCursos , creandoCapitulos
 from django.conf import settings
 from django.conf.urls.static import static
 
-
+#from django.contrib.auth.decorators import loguin_required
 urlpatterns = [
 	url(r'^admin/', admin.site.urls),
 	url(r'^salir$',logout),
@@ -31,6 +31,9 @@ urlpatterns = [
 	url(r'^cursos$',mostrarCurso,name="mostrarCurso"),
 	url(r'^addcursos$',creandoCursos,name="creandoCursos"),
 	url(r'^my$',miscursos,name="miscursos"),
+	url(r'^([0-9])$',creandoCapitulos,name="creandoCapitulos"),
+	url(r'^mostrarcapitulos/([0-9])',mostrar,name="mostrar"),
+	url(r'^contacto$',contactomail,name="contactomail"),
 ]
 
 if settings.DEBUG is True:

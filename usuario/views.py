@@ -1,13 +1,16 @@
 from django.shortcuts import render
 from .models import usuario
-from .form import FormularioRegistro
+from .form import FormularioRegistro ,FormularioContacto
 from django.http import HttpResponseRedirect
 from django.core.urlresolvers import reverse
-
+from django.shortcuts import  get_object_or_404
 from django.template.context_processors import csrf
 # Create your views here.
 from django.http import HttpResponse
-from almacen.models import Cursos
+from almacen.models import Cursos ,Document
+from django.core.mail import EmailMessage
+from django.contrib.auth.decorators import login_required
+
 
 def registro(request): 
 	user=password=''
@@ -90,26 +93,122 @@ def index(request):
 	
 	return render (request,'index.html',args)
 
-	
+@login_required(login_url='/sesion')	
 def mostrarCurso(request):
 	try:		
 		lis = usuario.objects.get(username=request.session['userr'])
-		if lis.gender == 't':
-			return render(request,'cursos.html', {'lis':lis})
 		ls = Cursos.objects.all()	
+		if lis.gender == 't':
+			return render(request,'cursos.html', {'lis':lis,'ls':ls})
 	except :
 			pass
 	return render(request,'cursos.html', {'ls':ls})	
 	
+@login_required(login_url='/sesion')
 def miscursos(request):
 	try:
 		listar = usuario.objects.get(username=request.session['userr'])
 		alistar = Cursos.objects.filter(usuario=listar)
-	except:
+	except KeyError:
 		pass
 	return	render(request,'miscursos.html',{'alistar':alistar})	
 
-	
+
+def mostrarCapitulos():
+	pass
+
+
+
+
+
+@login_required(login_url='/sesion')
+def mostrar(request,id_curso):
+	try:
+
+		#dato = Document.objects.get(curso=id_curso)
+		c = Document.objects.filter(curso = id_curso)
+		
+	except KeyError:
+		pass   
+	#este es el objeto de Cursos
+	#c = Document.objects.filter(curso=dato)
+	#return HttpResponseRedirect(reverse('must',args=(a.codigo,)))
+	#return render_to_response('receta.html',{'receta':dato,'comentarios':comentarios}, context_instance=RequestContext(request))
+	return	render(request,'cursoAlgo.html',{'c':c})
+
+
+def contactomail(request):
+	if request.method == 'POST':
+		formulario = FormularioContacto(request.POST)
+		if formulario.is_valid():
+			asunto = 'Mensaje de la Aplicacion de django'
+			mensaje = formulario.cleaned_data['mensaje']
+			mail = EmailMessage(asunto,mensaje,to=['jordyrevatta99@gmail.com'])
+			mail.send()
+			return HttpResponseRedirect(reverse('index'))
+			
+	else:	
+		formulario = FormularioContacto()
+		args = {}
+		args.update(csrf(request))
+		args['formulario'] = formulario
+		return render(request,'contacto.html',args )
+
+
+
+def contacto(request):
+    if request.method=='POST':
+        formulario = ContactoForm(request.POST)
+        if formulario.is_valid():
+            titulo = 'Mensaje Cursos.com....'
+            contenido = formulario.cleaned_data['mensaje'] + "\n"
+            contenido += 'Comunicarse a: ' + formulario.cleaned_data['correo']
+
+            correo = EmailMessage(titulo, contenido, to=['jordyrevatta99@gmail.com'])
+            correo.send()
+            return HttpResponseRedirect('/')
+    else:
+        formulario = ContactoForm()
+    return render_to_response('contactoform.html',{'formulario':formulario}, context_instance=RequestContext(request))
+
+
+'''
+
+def crear(request):
+	if request.POST:
+		form = ArticuloForm(request.POST)
+		if form.is_valid():
+					   
+
+			a = form.save()
+			a.codigo = hashlib.md5(str(a.id).encode()).hexdigest()[:5]
+			#falta añadir la ruta del modelo para pder utilizarlo con normalidad
+			#if request.session['userr']:
+			
+			 #   a.usuario = request.session['userr']
+			#else:
+			 #   pass
+			 # pedir perdon es mas facil q pedir permiso
+			try:
+				a.usuario = usuario.objects.get(username=request.session['userr'])
+			except KeyError:
+				pass
+
+
+			a.save()
+
+			return HttpResponseRedirect(reverse('must',args=(a.codigo,)))
+	else:
+		form = ArticuloForm()
+
+	args = {}
+	args.update(csrf(request))
+
+	args['form'] = form
+
+	return render(request,'template.html', args)
+
+'''
 ''' 
 mejorar esto y hacer filtro con los cursos de cada 
 		

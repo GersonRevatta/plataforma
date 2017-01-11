@@ -17,3 +17,6 @@ class FormularioRegistro(forms.ModelForm):
 			
 		}
 		
+class FormularioContacto(forms.Form):
+	correo = forms.EmailField()
+	mensaje = forms.CharField()

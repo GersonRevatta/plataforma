@@ -1,0 +1,83 @@
+{% extends 'base.html' %}
+{% block content %}
+
+		
+
+	          <div class="inner cover">
+	            <h1 class="cover-heading"> hhhh {{ c.curso }}{{ c.titulo }}{{ c.name }}Bienvenido usuario : <b>{{ request.session.userr  }}</b></h1>
+	            <p class="lead">Al curso de  {{  c.name  }}
+	            
+	            </p>
+	            <p class="lead">
+	             <a  class="btn btn-lg btn-default" onclick="window.location.href='/cursos'" >Regresar</a>
+	              
+	            </p>
+	          </div>
+			<br>
+	          	<!--
+	          	<div class="container">
+	          		 {% for i in c  %}
+			          		<p>Reproducir videos {{ i.titulo }}  este es el numero {{i.id}}</p>
+			          		<div>
+			          			<video class="go-video" controls >
+			          				<source src="{{i.docfile.url}}" type="video/mp4">
+			          				<source src="" type="video/webm">
+			          			</video>
+			          		</div>
+					
+
+
+
+					{% endfor %}
+	          	</div>
+
+
+	          	-->
+	          	<br>
+	          	<style type="text/css">
+	          		.go-video{
+	          			height:500px;
+	          			width:850px;
+	          		}
+	          		.opciones{
+	          			height: 400px;
+	          			width: 290px;
+	          			background-color: peru;
+	          			overflow: scroll;
+
+
+	          		}
+	          	</style>
+
+	          	<center><h1>parte del iframe </h1></center>
+	          	<div class="container">
+		          		<div class="row">
+		          			<div class="col-md-3">
+			          			<div class="list-group opciones">
+						          	{% for o in c  %}
+						          			<a href="#seccion{{ o.id }}" data-toggle="tab" role="tab" class="list-group-item">{{ o.titulo }}</a>
+						          	{% endfor %}
+			          			</div>
+		          			</div>
+		          			<div class="col-md-8">
+		          				<div class="tab-content">
+		          					{% for u in c  %}
+						          		<div class="tab-pane " role="tabpanel" id="seccion{{ u.id }}">
+						          			<video class="go-video" controls playinline>
+						          				<source src="{{u.docfile.url}}" type="video/mp4">
+						          			</video>
+						          		</div>
+						          	{% endfor %}
+		          				</div>
+		          			</div>
+		          		</div>
+	          	</div>
+
+
+
+	          	<br>
+	          	<br>
+	          	<br>
+	          	<br>
+
+	{% endblock %}

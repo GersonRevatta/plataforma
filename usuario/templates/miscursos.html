@@ -1,30 +1,61 @@
 {% extends 'base.html' %}
 {% block content %}
 
+	            <CENTER>
 
-	          <div class="inner cover">
-	            <h1 class="cover-heading">Deliver Pizza <b>{{ request.session.userr  }}</b></h1>
-	            <p class="lead">Aqui se muestran los cursos disponibles
-	            
-	            </p>
-	            <p class="lead">
-	              <a href="#" class="btn btn-lg btn-default">Ver Mas</a>
-	            </p>
-	          </div>
+			          <div class="inner cover">
+			            <h1 class="cover-heading">Cursos.com... te da la Bienvenida <b>{{ request.session.userr  }}</b></h1>
+	            	
+	            	
+	          			</div>
+	            </CENTER>
+	          
+
+
 			<br>
+			<style type="text/css">
+	       			.row{
+	       				margin-left: 55px;
+	       				
+	       			}
+
+	       		</style>
 	          	<div class="row">
 	          {% for i in alistar  %}
-							
-	          	<div class="col-md-5" style="
-	          	background-image: url('media/{{i.imagen}}');
-	          	background-size: 100% 100%;
-	          	width: 250px;
-	          	height: 300px;
-	          	">	<p>{{ i.name}}</p>
-	          		
-	          	</div>
+
+
+
+	          	<div  id='aaa' class="btn btn-default" >
+						
+				          	<div class="col-md-5" style="
+				          	background-image: url('media/{{i.imagen}}');
+				          	background-size: 100% 100%;
+				          	width: 250px;
+				          	height: 240px;
+
+				          	">
+				          	
+				          	<a class='btn btn-danger' href="#" onclick="window.location.href='/{{i.id}}'"
+				          	>Agregar</a>
+				          	<a class='btn btn-danger' href="#" onclick="window.location.href='/mostrarcapitulos/{{i.id}}'"
+				          	>Mostrar</a>
+				          	</div>
+
+						
+				</div>		
+	          	
+
 	
 				{% endfor %}
 	          </div>
+	          <center>
+	          	
+		            <p class="lead">
+		            Te animamos a iniciar otro curso	
+		            </p>
+		            <p class="lead">
+		              <a  class="btn btn-lg btn-default aj" onclick="window.location.href='/addcursos'" >Agregar curso</a>
+		            </p>
 	         
+	          </center>
 	{% endblock %}
