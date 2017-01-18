@@ -1,9 +1,80 @@
-<!DOCTYPE html>
-<html>
-<head>
-	<title></title>
-</head>
-<body>
+
+{% extends 'base.html' %}
+{% block content %}
+
+
+<!--  -->
+	<style type="text/css">
+	       			.row{
+	       				margin-left: 55px;
+	       			}
+	       		</style>
+	          <div class="row">
+			          {% for i in ls  %}
+		 	          
+ 
+				<div  id='aaa' class="btn btn-default" >
+						
+				          	<div class="col-md-5" style="
+				          	background-image: url('media/{{i.imagen}}');
+				          	background-size: 100% 100%;
+				          	width: 250px;
+				          	height: 240px;
+				          	">
+				          	
+				          	<a class='btn btn-danger' href="#" onclick="window.location.href='/mostrarcapitulos/{{i.codigo}}'"
+				          	>Mostrar</a>
+				          	</div>
+
+						
+				</div>
+
+						{% endfor %}
+	          </div>
+	          <br>
+	            {%  if lis.gender == 't' %}
+	            <p class="lead">
+	            	
+	            	<center><p class="lead">Agrega un nuevo curso</p></center>
+	              	<center>
+					
+<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal" data-whatever="@mdo">Agregar Curso</button>
+
+	              		
+
+	              	</center>
+	            </p>
+	            <p class="lead">
+	            <center><p class="lead">Ver mis cursos creados</p></center>
+	            <center>	
+	              <a  class="btn btn-lg btn-default aj" onclick="window.location.href='/my'" >
+	              	Mis Cursos
+	              </a>
+	            </center>
+	            </p>
+	            {% endif %}
+
+<!-- -->
+
+
+
+
+
+
+
+
+
+
+<!-- popup para agregar curso -->
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="exampleModalLabel">Agregando Nuevo Tema </h4>
+      </div>
+      <div class="modal-body">
+        <!--  -->
 <form method="post" enctype="multipart/form-data" >
 {% csrf_token %}
 				
@@ -26,13 +97,25 @@
 							{{ frm.imagen.errors }}
 						</td>
 					</tr>
-				</table>
-				 <input type="submit" value="Submit">
-	
-</form>
+										<tr>
+						<td>Selecionar </td>
+						<td>{{ fr.nombre }}	
+							{{ fr.nombre.errors }}
+						</td>
+					</tr>
 
-</body>
-</html>
+				</table>
+        	<button type="submit" class="btn btn-primary">Aceptar</button>
+        	<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+</form>
+        <!--  -->
+      </div>
+    </div>
+  </div>
+</div>
+
+
+{% endblock  %}
 
 
 

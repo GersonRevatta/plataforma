@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 {% block content %}
-
+			
 		
 
 	          <div class="inner cover">
@@ -67,17 +67,57 @@
 						          				<source src="{{u.docfile.url}}" type="video/mp4">
 						          			</video>
 						          		</div>
+
+	          								<a class='btn btn-danger' href="#" onclick="window.location.href='comment/{{u.id}}'"
+				          	>Agregar{{u.id}}</a>
+						          		
 						          	{% endfor %}
 		          				</div>
 		          			</div>
 		          		</div>
 	          	</div>
-
+	          	<hr>
+	          	<center><h2>comments a live</h2></center>
 
 
 	          	<br>
 	          	<br>
 	          	<br>
 	          	<br>
+	          		<h1>aqui</h1>
+		<div class="formulario">
+		<form  method="post" >{% csrf_token %}
+				
+				<center>
+			
+				<table>
+					<tr>
+						<td>User{{ form.id }}</td>
+						<td>{{ form.user }}	
+							{{ form.user.errors }}
+						</td>
+					</tr>
+					<tr>
+						<td></td>
+						<td>{{ form.email }}	
+							{{ form.email.errors }}
+						</td>
+					</tr>
+					<tr>
+						<td></td>
+						<td>{{ form.body }}	
+							{{ form.body.errors }}
+						</td>
+					</tr>
+				</table>
+				<br>
+				<button class="btn btn-lg btn-default aj">Comment</button>
+				</center>	
+			</form>
 
+	</div>
+
+	<h2>comments</h2>
+
+	
 	{% endblock %}

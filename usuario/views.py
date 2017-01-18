@@ -7,7 +7,7 @@ from django.shortcuts import  get_object_or_404
 from django.template.context_processors import csrf
 # Create your views here.
 from django.http import HttpResponse
-from almacen.models import Cursos ,Document
+from almacen.models import Curso ,Document
 from django.core.mail import EmailMessage
 from django.contrib.auth.decorators import login_required
 
@@ -82,7 +82,6 @@ def logout(request):
 
 
 
-
 def index(request):
 	frm = FormularioRegistro()
 
@@ -93,7 +92,10 @@ def index(request):
 	
 	return render (request,'index.html',args)
 
-@login_required(login_url='/sesion')	
+#^verificado
+
+
+
 def mostrarCurso(request):
 	try:		
 		lis = usuario.objects.get(username=request.session['userr'])
@@ -104,29 +106,29 @@ def mostrarCurso(request):
 			pass
 	return render(request,'cursos.html', {'ls':ls})	
 	
-@login_required(login_url='/sesion')
+
 def miscursos(request):
 	try:
 		listar = usuario.objects.get(username=request.session['userr'])
-		alistar = Cursos.objects.filter(usuario=listar)
+		alistar = Curso.objects.filter(usuario=listar)
 	except KeyError:
 		pass
 	return	render(request,'miscursos.html',{'alistar':alistar})	
 
 
-def mostrarCapitulos():
-	pass
 
 
 
-
-
-@login_required(login_url='/sesion')
-def mostrar(request,id_curso):
+#verificando
+#@login_required(login_url='/sesion')
+def mostrar(request,codigo):
 	try:
 
-		#dato = Document.objects.get(curso=id_curso)
-		c = Document.objects.filter(curso = id_curso)
+		dato = Cursos.objects.get(codigo=codigo)
+		#c = Document.objects.filter(curso = codigo)
+		c = Document.objects.filter(codigo=dato.codigo)
+		
+
 		
 	except KeyError:
 		pass   
@@ -135,8 +137,12 @@ def mostrar(request,id_curso):
 	#return HttpResponseRedirect(reverse('must',args=(a.codigo,)))
 	#return render_to_response('receta.html',{'receta':dato,'comentarios':comentarios}, context_instance=RequestContext(request))
 	return	render(request,'cursoAlgo.html',{'c':c})
+'''  
+r = reporte.objects.get(codigo=codigo)
 
-
+	return render (request,'hola.html', {'reporte': r})
+'''
+#verificado
 def contactomail(request):
 	if request.method == 'POST':
 		formulario = FormularioContacto(request.POST)
@@ -154,63 +160,3 @@ def contactomail(request):
 		args['formulario'] = formulario
 		return render(request,'contacto.html',args )
 
-
-
-def contacto(request):
-    if request.method=='POST':
-        formulario = ContactoForm(request.POST)
-        if formulario.is_valid():
-            titulo = 'Mensaje Cursos.com....'
-            contenido = formulario.cleaned_data['mensaje'] + "\n"
-            contenido += 'Comunicarse a: ' + formulario.cleaned_data['correo']
-
-            correo = EmailMessage(titulo, contenido, to=['jordyrevatta99@gmail.com'])
-            correo.send()
-            return HttpResponseRedirect('/')
-    else:
-        formulario = ContactoForm()
-    return render_to_response('contactoform.html',{'formulario':formulario}, context_instance=RequestContext(request))
-
-
-'''
-
-def crear(request):
-	if request.POST:
-		form = ArticuloForm(request.POST)
-		if form.is_valid():
-					   
-
-			a = form.save()
-			a.codigo = hashlib.md5(str(a.id).encode()).hexdigest()[:5]
-			#falta añadir la ruta del modelo para pder utilizarlo con normalidad
-			#if request.session['userr']:
-			
-			 #   a.usuario = request.session['userr']
-			#else:
-			 #   pass
-			 # pedir perdon es mas facil q pedir permiso
-			try:
-				a.usuario = usuario.objects.get(username=request.session['userr'])
-			except KeyError:
-				pass
-
-
-			a.save()
-
-			return HttpResponseRedirect(reverse('must',args=(a.codigo,)))
-	else:
-		form = ArticuloForm()
-
-	args = {}
-	args.update(csrf(request))
-
-	args['form'] = form
-
-	return render(request,'template.html', args)
-
-'''
-''' 
-mejorar esto y hacer filtro con los cursos de cada 
-		
-
-¿'''

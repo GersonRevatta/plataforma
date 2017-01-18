@@ -1,6 +1,7 @@
 {% extends 'base.html' %}
 {% block content %}
 
+
 	            <CENTER>
 
 			          <div class="inner cover">
@@ -23,7 +24,7 @@
 	          	<div class="row">
 	          {% for i in alistar  %}
 
-
+ 
 
 	          	<div  id='aaa' class="btn btn-default" >
 						
@@ -35,14 +36,14 @@
 
 				          	">
 				          	
-				          	<a class='btn btn-danger' href="#" onclick="window.location.href='/{{i.id}}'"
-				          	>Agregar</a>
-				          	<a class='btn btn-danger' href="#" onclick="window.location.href='/mostrarcapitulos/{{i.id}}'"
+				          	<a class='btn btn-danger' href="#" onclick="window.location.href='/{{i.codigo}}'"
+				          	>Agregar{{i.codigo}}</a>
+				          	<a class='btn btn-danger' href="#" onclick="window.location.href='/mostrarcapitulos/{{i.codigo}}'"
 				          	>Mostrar</a>
 				          	</div>
 
 						
-				</div>		
+	 			</div>		
 	          	
 
 	

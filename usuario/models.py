@@ -2,6 +2,7 @@ from django.db import models
 import hashlib
 # Create your models here.
 
+
 class usuario (models.Model):
 	STUDENT = 's'
 	TEACHER = 't'
@@ -46,6 +47,7 @@ class usuario (models.Model):
 		except 	 usuario.DoesNotExist:
 			return False   
 	
+
 
 '''
 class UserProfile(models.Model):

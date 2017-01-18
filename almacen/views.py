@@ -1,17 +1,63 @@
 from django.shortcuts import render, redirect #puedes importar render_to_response
-from .form import cursos ,capitulos
+#from .form import cursos ,capitulos , CommentForm ,ReplyForm
 from django.http import HttpResponseRedirect
 from django.http import HttpResponse
 from usuario.models import usuario
 from django.core.urlresolvers import reverse
-from .models import Cursos
+#from .models import Cursos ,Comment
 import hashlib
 from django.template.context_processors import csrf
 from django.shortcuts import  get_object_or_404
 from django.contrib.auth.decorators import login_required
+from .models import Curso , Tema , Video ,Comment,Categoria
+from .form import CursoForm,TemaForm,VideoForm,CommentForm,CategoriaForm
 
-@login_required(login_url='/sesion')
+#from .models import Document
+
 def creandoCursos(request):
+	if request.POST:
+		frm=CursoForm(request.POST,request.FILES)
+		fr=CategoriaForm(request.POST)
+		if frm.is_valid() and fr.is_valid():
+			a = frm.save()
+			b=fr.save()
+			try:
+				a.usuario = usuario.objects.get(username=request.session['userr'])
+				a.categoria=Categoria.objects.get(id=b.id)
+
+			except KeyError:
+				pass
+			a.codigo = hashlib.md5(str(a.id).encode()).hexdigest()[:5]	
+			a.save()
+
+
+		
+		
+	fr = CategoriaForm()
+	frm = CursoForm()
+	try:
+		lis = usuario.objects.get(username=request.session['userr'])
+		ls = Curso.objects.all()	
+		
+	except :
+		pass
+	context = {'frm':frm,'fr':fr,'lis':lis,'ls':ls}
+			
+
+	return render(request,'addcurso.html',context)
+'''
+try:		
+		lis = usuario.objects.get(username=request.session['userr'])
+		ls = Cursos.objects.all()	
+		if lis.gender == 't':
+			return render(request,'cursos.html', {'lis':lis,'ls':ls})
+	except :
+			pass
+	return render(request,'cursos.html', {'ls':ls})	
+
+'''
+
+'''	
 	if request.POST:
 		frm=cursos(request.POST,request.FILES)
 		if frm.is_valid():
@@ -21,6 +67,7 @@ def creandoCursos(request):
 
 			except KeyError:
 				pass
+			a.codigo = hashlib.md5(str(a.id).encode()).hexdigest()[:5]	
 			a.save()
 
 		
@@ -29,16 +76,132 @@ def creandoCursos(request):
 		
 	else:
 		frm = cursos()
-		return render(request,'addcurso.html', {'frm': frm})
+		args = {}
+		args.update(csrf(request))
+		args['frm'] = frm
+		return render(request,'addcurso.html',args)
 
-@login_required(login_url='/sesion')
-def creandoCapitulos(request,id_curso):
+'''
+#verificado
+'''
+
+def miscursos(request):
+	try:
+		listar = usuario.objects.get(username=request.session['userr'])
+		alistar = Curso.objects.filter(usuario=listar)
+	except KeyError:
+		pass
+	return	render(request,'miscursos.html',{'alistar':alistar})	
+
+'''
+#TemaForm,VideoForm
+def addcapitulo(request):
+	try:
+		listar = usuario.objects.get(username=request.session['userr'])
+		alistar = Curso.objects.filter(usuario=listar)
+	except KeyError:
+		pass
+
+	if request.POST:
+		frm=CursoForm(request.POST,request.FILES)
+		fr=CategoriaForm(request.POST)
+		if frm.is_valid() and fr.is_valid():
+			a = frm.save()
+			b=fr.save()
+			try:
+				a.usuario = usuario.objects.get(username=request.session['userr'])
+				a.categoria=Categoria.objects.get(id=b.id)
+
+			except KeyError:
+				pass
+			a.codigo = hashlib.md5(str(a.id).encode()).hexdigest()[:5]	
+			a.save()
+
+	fr = CategoriaForm()
+	frm = CursoForm()
+	context={'frm':frm,'fr':fr,'listar':listar,'alistar':alistar}
+	return render (request,'addcapitulo.html',context)		
+'''				
+	if request.POST and alistar.id:
+		frm=VideoForm(request.POST,request.FILES)
+		fr = TemaForm(request.POST)
+		if frm.is_valid() and fr.is_valid():
+			b=frm.save()
+			a=fr.save()
+			a.id=get_object_or_404(Curso, pk=alistar.id)
+			try:
+				#b.curso = get_object_or_404(Curso, codigo=codigo)
+				
+				#b.codigo = codigo
+				
+				pass
+			except KeyError:
+				pass	
+
+'''				
+
+	
+
+				
+	#frm=VideoForm()
+	#fr=TemaForm()
+	
+
+	
+def creandoCapitulos(request,codigo):
+	if request.POST:
+		frm=VideoForm(request.POST,request.FILES)
+		fr = TemaForm(request.POST)
+		if frm.is_valid() and fr.is_valid():
+			b=frm.save()
+			a=fr.save()
+			a.curso = get_object_or_404(Curso,codigo=codigo)
+			a.codigo=codigo
+			b.tema=get_object_or_404(Tema,id=a.id)
+			a.save()
+			b.save()
+	try:
+		
+		j= Curso.objects.get(codigo=codigo)
+		c = Tema.objects.filter(codigo = j.codigo )
+		d= Video.objects.all()
+		# = get_object_or_404(Tema,id=t.id)
+		#d= Video.objects.filter(tema=t.pk)
+		
+	except KeyError:
+		pass	
+	frm=VideoForm()
+	fr=TemaForm()
+	context={'frm':frm,'fr':fr,'c':c,'d':d}
+	return render(request,'addtema.html',context)		
+'''	
+
+def mostrar(request,codigo):
+	try:
+
+		dato = Cursos.objects.get(codigo=codigo)
+		#c = Document.objects.filter(curso = codigo)
+		c = Document.objects.filter(codigo=dato.codigo)
+		
+
+		
+	except KeyError:
+		pass   
+	#este es el objeto de Cursos
+	#c = Document.objects.filter(curso=dato)
+	#return HttpResponseRedirect(reverse('must',args=(a.codigo,)))
+	#return render_to_response('receta.html',{'receta':dato,'comentarios':comentarios}, context_instance=RequestContext(request))
+	return	render(request,'cursoAlgo.html',{'c':c})
+
+
+
 	if request.POST:
 		frm=capitulos(request.POST,request.FILES)
 		if frm.is_valid():
 			b=frm.save()
 			try:
-				b.curso = get_object_or_404(Cursos, pk=id_curso)
+				b.curso = get_object_or_404(Cursos, codigo=codigo)
+				b.codigo = codigo
 				
 				pass
 			except KeyError:
@@ -52,70 +215,40 @@ def creandoCapitulos(request,id_curso):
 		frm=capitulos()
 
 		return render (request,'addcapitulo.html',{'frm':frm})		
-
-
-
-
 '''
 
 
-def crear(request):
-	if request.POST:
-		form = ArticuloForm(request.POST)
+def add_comment(request, id_video):
+	ls = Comment.objects.all()	
+	if request.method == 'POST':
+		form = CommentForm(request.POST)
 		if form.is_valid():
-					   
+			comment = form.save(commit=False)
+			comment.document= get_object_or_404(Document,pk=id_video)
+			comment.save()
 
-			a = form.save()
-			a.codigo = hashlib.md5(str(a.id).encode()).hexdigest()[:5]
-			#falta añadir la ruta del modelo para pder utilizarlo con normalidad
-			#if request.session['userr']:
+
 			
-			 #   a.usuario = request.session['userr']
-			#else:
-			 #   pass
-			 # pedir perdon es mas facil q pedir permiso
-			try:
-				a.usuario = usuario.objects.get(username=request.session['userr'])
-			except KeyError:
-				pass
+	form =CommentForm()
+	template = 'comentario.html'
+	context = {'form':form,'ls':ls}
+	return render(request,template,context)
+		
+
+def mostrarComentario(request):
+	ls = Comment.objects.all()	
+	return render(request,'mostrarcomentario.html',{'ls':ls})
 
 
-			a.save()
-
-			return HttpResponseRedirect(reverse('must',args=(a.codigo,)))
-	else:
-		form = ArticuloForm()
-
-	args = {}
-	args.update(csrf(request))
-
-	args['form'] = form
-
-	return render(request,'template.html', args)
 
 
-'''
-'''
-
-try:
-		listar = usuario.objects.get(username=request.session['userr'])
-		alistar = Cursos.objects.filter(usuario=listar)
-	except:
-		pass
-	return	render(request,'miscursos.html',{'alistar':alistar})
 
 
-class Cursos(models.Model):
-	name = models.CharField(max_length=100)
-	descripcion = models.CharField(max_length=100)
-	usuario = models.ForeignKey(usuario,null=True, blank=True)
-	imagen = models.ImageField(upload_to='imagenes/')
-	
 
-class Document(models.Model):
-	titulo = models.CharField(max_length=100)
-	descripcion = models.CharField(max_length=100)
-	filename = models.CharField(max_length=100)
-	curso = models.ForeignKey(Cursos,null=True, blank=True)
-	docfile = models.FileField(upload_to='document/')
-'''
+
+
+
+
+
+
+
