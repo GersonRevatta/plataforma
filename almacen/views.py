@@ -150,6 +150,15 @@ def addcapitulo(request):
 	
 def creandoCapitulos(request,codigo):
 	if request.POST:
+		form = CommentForm(request.POST)
+		if form.is_valid() :
+			b=form.save()
+			
+			a= Tema.objects.filter(codigo=codigo)
+			for repo in a:
+				b.tema = get_object_or_404(Tema,id=repo.id)
+			
+			b.save()    
 		frm=VideoForm(request.POST,request.FILES)
 		fr = TemaForm(request.POST)
 		if frm.is_valid() and fr.is_valid():
@@ -165,14 +174,14 @@ def creandoCapitulos(request,codigo):
 		j= Curso.objects.get(codigo=codigo)
 		c = Tema.objects.filter(codigo = j.codigo )
 		d= Video.objects.all()
-		# = get_object_or_404(Tema,id=t.id)
-		#d= Video.objects.filter(tema=t.pk)
+		co=Comment.objects.all()
 		
 	except KeyError:
 		pass	
+	form=CommentForm()	
 	frm=VideoForm()
 	fr=TemaForm()
-	context={'frm':frm,'fr':fr,'c':c,'d':d}
+	context={'frm':frm,'fr':fr,'c':c,'d':d,'form':form,'co':co}
 	return render(request,'addtema.html',context)		
 '''	
 
