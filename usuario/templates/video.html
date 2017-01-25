@@ -1,0 +1,111 @@
+{% extends 'base.html' %}
+{% block content %}
+			
+<h2>this is show videos</h2>
+	<style type="text/css">
+	          		.go-video{
+	          			height:500px;
+	          			width:850px;
+	          		}
+	          		.opciones{
+	          			height: 400px;
+	          			width: 290px;
+	          			background-color: peru;
+	          			overflow: scroll;
+
+
+	          		}
+	          	</style>
+<div class="container">
+		          		<div class="row">
+		          			<div class="col-md-3">
+			          			<div class="list-group opciones">
+						          	
+						          			<a href="#seccion{{ c.id }}" data-toggle="tab" role="tab" class="list-group-item">{{  c.titulo }}</a>
+						          			{%for enlaces in d %}
+						          				{% if c.id != enlaces.id %}
+						          				<a href="" data-toggle="tab" role="tab" class="list-group-item"    onclick="window.location.href='/curso.com/{{ enlaces.id  }}/{{enlaces.slug}}'"
+				          	>{{ enlaces.titulo }}</a>
+						          				{% endif %}
+						          			{% endfor %}
+						          	
+				          	>{{ lista.titulo }}</a>
+
+			          			</div>
+		          			</div>
+		          			<div class="col-md-8">
+		          				<div class="tab-content">
+		          					
+						          		<div class="tab-pane active" role="tabpanel" id="seccion{{ c.id }}">
+						          			<video class="go-video" controls playinline>
+						          				<source src="{{vi.docfile.url}}" type="video/mp4">
+						          			</video>
+						          		</div>
+						   
+		          				</div>
+		          			</div>
+		          		</div>
+	          	</div>
+
+	          	<center>
+	          		 <!-- mensajes echos para el video-->
+						     {% for comment in co %}
+						     	
+						     	<center>
+								<table>
+									<tr>
+										<td>{{ comment.user }} ja {{ comment.tema.id }}</td>
+										<td>{{ comment.email }}</td>
+									</tr>
+									<tr>
+										<td>{{ comment.body }}</td>
+									</tr>
+								</table>					   
+						     		
+						     	</center>
+						     	
+						     	
+						   
+	
+
+						     {% endfor %}     		
+	          	</center>
+
+<center>
+	
+<h2>this is comment</h2>
+	<!-- formulario para un determinado rtema -->
+				<form class="form_" method="post">
+					{% csrf_token %}
+				
+		
+					<table>
+						<tr>
+							<td>Nombre del Usuario </td>
+							<td>{{ form.user }}	
+								{{ form.user.errors }}
+							</td>
+						</tr>
+						<tr>
+							<td>Mensaje a enviar </td>
+							<td class="mensaje" >
+								{{form.email}}
+								{{ form.email.errors}}
+							</td>
+						</tr>
+						<tr>
+							<td>Cuerpo </td>
+							<td class="mensaje" >
+								{{form.body}}
+								{{ form.email.errors}}
+							</td>
+						</tr>
+					</table>
+					<br>
+						<input class="btn btn-lg btn-default aj" type="submit" value="Enviar">
+					</form>
+
+
+</center>
+
+{% endblock %}			

@@ -1,5 +1,6 @@
 from django.db import models
 import hashlib
+import datetime
 # Create your models here.
 
 
@@ -47,6 +48,16 @@ class usuario (models.Model):
 		except 	 usuario.DoesNotExist:
 			return False   
 	
+class UserProfile(models.Model):
+    user = models.OneToOneField(usuario)
+    activation_key = models.CharField(max_length=40, blank=True)
+    key_expires = models.DateTimeField(default=datetime.date.today())
+
+    def __str__(self):
+        return self.user.username
+
+    class Meta:
+        verbose_name_plural=u'Perfiles de Usuario'
 
 
 '''

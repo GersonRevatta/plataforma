@@ -9,30 +9,12 @@
 	            
 	            </p>
 	            <p class="lead">
-	             <a  class="btn btn-lg btn-default" onclick="window.location.href='/cursos'" >Regresar</a>
+	             <a  class="btn btn-lg btn-default" onclick="window.location.href='/addcursos'" >Regresar</a>
 	              
 	            </p>
 	          </div>
 			<br>
-	          	<!--
-	          	<div class="container">
-	          		 {% for i in c  %}
-			          		<p>Reproducir videos {{ i.titulo }}  este es el numero {{i.id}}</p>
-			          		<div>
-			          			<video class="go-video" controls >
-			          				<source src="{{i.docfile.url}}" type="video/mp4">
-			          				<source src="" type="video/webm">
-			          			</video>
-			          		</div>
-					
-
-
-
-					{% endfor %}
-	          	</div>
-
-
-	          	-->
+	          	
 	          	<br>
 	          	<style type="text/css">
 	          		.go-video{
@@ -48,76 +30,74 @@
 
 	          		}
 	          	</style>
+	          	<center><h3>this is testeoo</h3></center>
+	          	{% for lista in c %}
+	          		<center><h4>
+	          		<a class='btn btn-danger'  onclick="window.location.href='/curso.com/{{ lista.id  }}/{{lista.slug}}'"
+				          	>{{ lista.titulo }}</a>
+	          		
+	          		</h4></center>
+	          	{% endfor %}
 
-	          	<center><h1>parte del iframe </h1></center>
-	          	<div class="container">
-		          		<div class="row">
-		          			<div class="col-md-3">
-			          			<div class="list-group opciones">
-						          	{% for o in c  %}
-						          			<a href="#seccion{{ o.id }}" data-toggle="tab" role="tab" class="list-group-item">{{ o.titulo }}</a>
-						          	{% endfor %}
-			          			</div>
-		          			</div>
-		          			<div class="col-md-8">
-		          				<div class="tab-content">
-		          					{% for u in c  %}
-						          		<div class="tab-pane " role="tabpanel" id="seccion{{ u.id }}">
-						          			<video class="go-video" controls playinline>
-						          				<source src="{{u.docfile.url}}" type="video/mp4">
-						          			</video>
-						          		</div>
+	      {%  if lis.gender == 't' %}     	
 
-	          								<a class='btn btn-danger' href="#" onclick="window.location.href='comment/{{u.id}}'"
-				          	>Agregar{{u.id}}</a>
-						          		
-						          	{% endfor %}
-		          				</div>
-		          			</div>
-		          		</div>
-	          	</div>
-	          	<hr>
-	          	<center><h2>comments a live</h2></center>
+<!-- this is add -->
 
+<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal" data-whatever="@mdo">Agregar Tema </button>
+		{% endif%}
+<!--  -->
+	 <!--esta es la parte para agregar un  tema al curso -->
+				          	<!-- pop up para agregar temas a un curso -->
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="exampleModalLabel">Agregando Nuevo Tema al curso </h4>
+      </div>
+      <div class="modal-body">
+      <!--  -->
 
-	          	<br>
-	          	<br>
-	          	<br>
-	          	<br>
-	          		<h1>aqui</h1>
-		<div class="formulario">
-		<form  method="post" >{% csrf_token %}
+<form method="post" enctype="multipart/form-data" >
+{% csrf_token %}
 				
-				<center>
-			
 				<table>
 					<tr>
-						<td>User{{ form.id }}</td>
-						<td>{{ form.user }}	
-							{{ form.user.errors }}
+						<td>Titulo del capitulo </td>
+						<td>{{ fr.titulo }}	
+							{{ fr.titulo.errors }}
 						</td>
 					</tr>
 					<tr>
-						<td></td>
-						<td>{{ form.email }}	
-							{{ form.email.errors }}
+						<td>Descripcion del capitulo</td>
+						<td>{{ fr.descripcion }}	
+							{{ fr.descripcion.errors }}
 						</td>
 					</tr>
 					<tr>
-						<td></td>
-						<td>{{ form.body }}	
-							{{ form.body.errors }}
+						<td>Nombre del archivo</td>
+						<td>{{ frm.filename }}	
+							{{ frm.filename.errors }}
+						</td>
+					</tr>
+					<tr>
+						<td>Selecionar Archivo multimedia</td>
+						<td>{{ frm.docfile }}	
+							{{ frm.docfile.errors }}
 						</td>
 					</tr>
 				</table>
-				<br>
-				<button class="btn btn-lg btn-default aj">Comment</button>
-				</center>	
-			</form>
+				<button type="submit" class="btn btn-primary">Aceptar</button>
+        		<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+				 <input type="submit" value="Submit">
+	
+</form>
+      <!--  -->
+      </div>
+    </div>
+  </div>
+</div>
 
-	</div>
-
-	<h2>comments</h2>
-
+	  
 	
 	{% endblock %}

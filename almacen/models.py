@@ -1,9 +1,13 @@
 from django.db import models
 from usuario.models import usuario
 # Create your models here.
+from django.core.urlresolvers import reverse
 ''' 
 nombre
 '''
+from django.template import defaultfilters
+from django.template.defaultfilters import slugify
+
 class Categoria(models.Model):
 	ANIME ='ani'
 	VIRTUALIZACION ='vir'
@@ -28,6 +32,12 @@ class Tema(models.Model):
 	codigo = models.CharField(max_length=5)
 	descripcion = models.CharField(max_length=100)
 	curso = models.ForeignKey(Curso,null=True, blank=True)
+	slug = models.SlugField(max_length=100)
+	def save(self, *args, **kwargs):
+		self.slug = defaultfilters.slugify(self.titulo)
+		super(Tema, self).save(*args, **kwargs)
+
+
 	
 class Video(models.Model):
 	tema = models.ForeignKey(Tema,null=True, blank=True)

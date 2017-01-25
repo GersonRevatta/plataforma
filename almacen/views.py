@@ -226,7 +226,7 @@ def mostrar(request,codigo):
 		return render (request,'addcapitulo.html',{'frm':frm})		
 '''
 
-
+ 
 def add_comment(request, id_video):
 	ls = Comment.objects.all()	
 	if request.method == 'POST':
@@ -250,12 +250,24 @@ def mostrarComentario(request):
 
 
 
-
-
-
-
-
-
+def mostrarVideos(request,id_video, slug ):
+	c = Tema.objects.get(id=id_video)
+	if request.POST:
+		form = CommentForm(request.POST)
+		if form.is_valid() :
+			b=form.save()
+			
+			a= Tema.objects.filter(codigo=c.codigo)
+			for repo in a:
+				b.tema = get_object_or_404(Tema,id=repo.id)
+			
+			b.save()    
+	form=CommentForm()	
+	d = Tema.objects.filter(codigo=c.codigo)
+	vi = Video.objects.get(id=id_video)
+	co=Comment.objects.filter(tema=vi.id)
+	context = {'c':c,'d':d,'vi':vi,'form':form,'co':co}
+	return render(request,'video.html',context)
 
 
 

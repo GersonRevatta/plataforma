@@ -16,7 +16,15 @@ class FormularioRegistro(forms.ModelForm):
 			'password':forms.PasswordInput(),
 			
 		}
-		
+
+	def save(self, commit=True):
+		user = super(FormularioRegistro, self).save(commit=False)
+		if commit:
+			user.is_active = False # No está activo hasta que active el vínculo de verificación
+			user.save()	
+		return user   
+
+
 class FormularioContacto(forms.Form):
 	correo = forms.EmailField()
 	mensaje = forms.CharField()
