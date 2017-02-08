@@ -98,9 +98,20 @@
 		{% block loguin %} {% endblock %}
 
 
+<style type="text/css">
+  .footer {
+  position: auto;
+  bottom: 0;
+  width: 100%;
+  /* Set the fixed height of the footer here */
+  height: 60px;
+ 
+}
+</style>
       
 {% block footer %} 
-
+<div class="footer">
+  
     <footer id="footer" class="site-footer">
       <div class="container">
         <div class="row">
@@ -134,6 +145,7 @@
       </div>
       
     </footer>
+</div>
         
   {% endblock %}      
  <script type="text/javascript" href="{% static 'js/jquery.js' %} "></script>   

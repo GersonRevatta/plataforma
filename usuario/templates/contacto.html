@@ -19,13 +19,19 @@
 				<center>
 					
 				<div  class="comentario">
-					
+					<p>nombre ,correo , mensaje </p>
 
 					<form class="form_" method="post">
 					{% csrf_token %}
 				
 				
 					<table>
+					<tr>
+							<td>Nombre</td>
+							<td>{{ formulario.nombre }}	
+								{{ formulario.nombre.errors }}
+							</td>
+						</tr>
 						<tr>
 							<td>Correo</td>
 							<td>{{ formulario.correo }}	
@@ -96,7 +102,7 @@ $(document).ready(function(){
 <form>
 Nome: <input type="text" name="nombre">
 <br>
-<input type="checkbox" name="mayor_edad" value="1" id="mayoria_edad"> Sou maior de idade
+<input type="checkbox" name="mayor_edad" value="1" id="mayoria_edad"> Soy mayor de edad
 <br>
 <div id="formulariomayores" style="display: none;">
 Dado para maiores de idade: <input type="text" name="mayores_edad">
@@ -202,6 +208,37 @@ setInterval(tick, 1000);
 <div id="root">
   <!-- This div's content will be managed by React. -->
 </div>
+
+
+<h2>this is test</h2>
+<script>
+function comprobarClave(){
+    clave1 = document.f1.clave1.value
+    clave2 = document.f1.clave2.value
+
+    if (clave1 == clave2)
+       alert("Las dos claves son iguales...\nRealizaríamos las acciones del caso positivo")
+    else
+       alert("Las dos claves son distintas...\nRealizaríamos las acciones del caso negativo")
+}
+</script>
+</head>
+
+<body>
+
+<h1>Validar si la contraseña y la repetición de la contraseña son iguales</h1>
+<br>
+Escribe una supuesta contraseña dos veces, una en cada campo, y pulsa el botón. Javascript te dirá si las dos son iguales.
+
+<br>
+<form action="" name="f1">
+Contraseña: <input type="password" name="clave1" size="20">
+<br>
+Repite contraseña: <input type="password" name="clave2" size="20">
+<br>
+<input type="button" value="Comprobar si son iguales" onClick="comprobarClave()">
+
+</form> 
 
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/react/x.y.z/react.min.js"></script>
     <script src="https://fb.me/react-15.0.0.js"></script>

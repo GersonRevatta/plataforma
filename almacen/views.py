@@ -29,9 +29,6 @@ def creandoCursos(request):
 				pass
 			a.codigo = hashlib.md5(str(a.id).encode()).hexdigest()[:5]	
 			a.save()
-
-
-		
 		
 	fr = CategoriaForm()
 	frm = CursoForm()
@@ -271,5 +268,5 @@ def mostrarVideos(request,id_video, slug ):
 
 
 
-
+ 
 

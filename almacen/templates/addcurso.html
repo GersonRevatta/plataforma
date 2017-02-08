@@ -4,6 +4,27 @@
 
 
 <!--  -->
+	            {%  if lis.gender == 't' %}
+	            <p class="lead">
+	            	
+	            	<center><p class="lead">Agrega un nuevo curso</p></center>
+	              	<center>
+					
+<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal" data-whatever="@mdo">Agregar Curso</button>
+
+	              		
+
+	              	</center>
+	            </p>
+	            <p class="lead">
+	            <center><p class="lead">Ver mis cursos creados</p></center>
+	            <center>	
+	              <a  class="btn btn-lg btn-default aj" onclick="window.location.href='/my'" >
+	              	Mis Cursos
+	              </a>
+	            </center>
+	            </p>
+	            {% endif %}
 	<style type="text/css">
 	       			.row{
 	       				margin-left: 55px;
@@ -27,46 +48,14 @@
 				          	<a class='btn btn-danger' href="#" onclick="window.location.href='mostrarcapitulos/{{i.codigo}}'"
 				          	>Mostrar 2 pt</a>
 				          	</div>
-				          	</div>
-				          	<!--
-							<a class='btn btn-danger' href="#" onclick="window.location.href='/{{i.codigo}}'"
-				          	>Agregar{{i.codigo}}</a>
-				          	<a class='btn btn-danger' href="#" onclick="window.location.href='/mostrarcapitulos/{{i.codigo}}'"
-				          	>Mostrar</a>
-				          	</div>
-
+				   </div>
+				
 						
-
-
-				          	 -->
-
-						
-				</div>
 
 						{% endfor %}
+				</div>
 	          </div>
 	          <br>
-	            {%  if lis.gender == 't' %}
-	            <p class="lead">
-	            	
-	            	<center><p class="lead">Agrega un nuevo curso</p></center>
-	              	<center>
-					
-<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal" data-whatever="@mdo">Agregar Curso</button>
-
-	              		
-
-	              	</center>
-	            </p>
-	            <p class="lead">
-	            <center><p class="lead">Ver mis cursos creados</p></center>
-	            <center>	
-	              <a  class="btn btn-lg btn-default aj" onclick="window.location.href='/my'" >
-	              	Mis Cursos
-	              </a>
-	            </center>
-	            </p>
-	            {% endif %}
 
 <!-- -->
 
@@ -128,7 +117,8 @@
   </div>
 </div>
 
-
+  
+   
 {% endblock  %}
 
 

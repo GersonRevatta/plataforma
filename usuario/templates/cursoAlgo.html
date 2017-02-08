@@ -1,21 +1,72 @@
 {% extends 'base.html' %}
 {% block content %}
 			
+			<div class="container text-center">
+				
+		          <div class="inner cover">
+		            <h1 class="cover-heading"> {{ c.curso }}{{ c.titulo }}{{ c.name }}Bienvenido usuario : <b>{{ request.session.userr  }}</b></h1>
+		            <p class="lead">Al curso de  {{  c.name  }}
+		            
+		            </p>
+		            <p class="lead">
+		             <a  class="btn btn-lg btn-default" onclick="window.location.href='/addcursos'" >Regresar</a>
+		              
+		            </p>
+		          </div>
+			</div>
 		
 
-	          <div class="inner cover">
-	            <h1 class="cover-heading"> hhhh {{ c.curso }}{{ c.titulo }}{{ c.name }}Bienvenido usuario : <b>{{ request.session.userr  }}</b></h1>
-	            <p class="lead">Al curso de  {{  c.name  }}
-	            
-	            </p>
-	            <p class="lead">
-	             <a  class="btn btn-lg btn-default" onclick="window.location.href='/addcursos'" >Regresar</a>
-	              
-	            </p>
-	          </div>
-			<br>
-	          	
-	          	<br>
+	      {%  if lis.gender == 't' and dato.usuario.username ==  request.session.userr %}     	
+
+			<!-- this is add -->
+			<div class="container text-center">
+				
+			<button type="button" class="btn btn-primary text-center" data-toggle="modal" data-target="#exampleModal" data-whatever="@mdo">Agregar Tema </button>
+			</div>
+		{% endif%}
+<script>
+function comprobarTipo(){
+
+    
+    tipo = var cod = document.getElementById("pos").value;
+
+    if ( tipo == 'Yes')
+       alert("Las dos claves son iguales...\nRealizaríamos las acciones del caso positivo")
+    else
+       alert("Las dos claves son distintas...\nRealizaríamos las acciones del caso negativo")
+}
+</script>
+<!--  -->
+<style type="text/css">
+	.panel-default{
+		margin:100px;
+	}
+</style>  	
+	          		
+					<div class="container">
+						
+						  <div class="panel panel-default">
+						  <!-- Default panel contents -->
+						  	  <div class="panel-heading text-center"> <b> {{ dato.name }}</b>  </div>
+							  <div class="panel-body">
+							  <h4>Concepto:</h4>
+							    <p>{{ dato.descripcion }}</p>
+							  </div>
+
+						  <!-- List group -->
+
+						<div class="list-group">
+	   	{% for lista in c %}
+							<a  href="#" class='text-center list-group-item'  onclick="window.location.href='/curso.com/{{ lista.id  }}/{{lista.slug}}'"
+				          	>{{ lista.titulo }}</a>
+						  
+	       {% endfor %}
+						</div>
+
+						</div>	
+					</div>
+
+
 	          	<style type="text/css">
 	          		.go-video{
 	          			height:500px;
@@ -27,24 +78,11 @@
 	          			background-color: peru;
 	          			overflow: scroll;
 
-
+     
 	          		}
 	          	</style>
-	          	<center><h3>this is testeoo</h3></center>
-	          	{% for lista in c %}
-	          		<center><h4>
-	          		<a class='btn btn-danger'  onclick="window.location.href='/curso.com/{{ lista.id  }}/{{lista.slug}}'"
-				          	>{{ lista.titulo }}</a>
-	          		
-	          		</h4></center>
-	          	{% endfor %}
+	          	
 
-	      {%  if lis.gender == 't' %}     	
-
-<!-- this is add -->
-
-<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal" data-whatever="@mdo">Agregar Tema </button>
-		{% endif%}
 <!--  -->
 	 <!--esta es la parte para agregar un  tema al curso -->
 				          	<!-- pop up para agregar temas a un curso -->
@@ -55,10 +93,12 @@
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
         <h4 class="modal-title" id="exampleModalLabel">Agregando Nuevo Tema al curso </h4>
       </div>
-      <div class="modal-body">
-      <!--  -->
 
-<form method="post" enctype="multipart/form-data" >
+      <div class="modal-body">
+  
+     <!--  -->
+
+<form method="post" enctype="multipart/form-data" name="va" >
 {% csrf_token %}
 				
 				<table>
@@ -80,16 +120,31 @@
 							{{ frm.filename.errors }}
 						</td>
 					</tr>
+
 					<tr>
-						<td>Selecionar Archivo multimedia</td>
+
+						<td>Ingresa codigo </td>
+						<td>{{ frm.tipoArchivo }}	
+							{{ frm.tipoArchivo.errors }}
+						</td>
+					</tr>
+					<tr>
+
+						<td>Inserta codigo  </td>
 						<td>{{ frm.docfile }}	
 							{{ frm.docfile.errors }}
 						</td>
 					</tr>
+					<tr>
+						<td>
+					{{ frm.smart_phone_ownership }}
+						{{ frm.smart_phone_ownership.errors }}
+							
+						</td>
+					</tr>
 				</table>
-				<button type="submit" class="btn btn-primary">Aceptar</button>
+				<button  class="btn btn-primary" onClick="comprobarTipo()">Aceptar</button>
         		<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-				 <input type="submit" value="Submit">
 	
 </form>
       <!--  -->
@@ -98,6 +153,163 @@
   </div>
 </div>
 
-	  
+
+<style type="text/css">
+	.hola{
+		background-color: peru;
+	}
+	.jola{
+		background-color: blue;
+	}
+</style>
+
+<script type="text/javascript">
+function ShowSelectedd()
+{
+/* Para obtener el valor */
+/*  .options.selectedIndex;
+var cod = document.getElementById("tipoArchivo").value;
+
+*/
+var cod = document.getElementById("tipoArchivo").value;
+	var d = document.getElementById("enlace"); 
+
+if (cod == 'vim') {
+
+	d.setAttribute("pattern", "https://(vimeo\.com/[0-9]+($|\?.*)|player\.vimeo\.com/video/[0-9]*($|\?.+))");
+
+ 
+
+}else{
 	
+	d.setAttribute("pattern","http://www\.youtube\.com\/(.+)|https://www\.youtube\.com\/(.+)");
+
+
+}
+ 
+}
+</script>
+
+
+<!-- cla --><!--        -->
+	<script
+			  src="https://code.jquery.com/jquery-3.1.1.js"
+			  integrity="sha256-16cdPddA6VdVInumRGo6IbivbERE8p7CQR3HzTBuELA="
+			  crossorigin="anonymous"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<style type="text/css">
+.clasecss{
+   background-color: blue;
+   font-weight: bold;
+   background: red;
+}
+
+</style>
+<script>
+$(document).ready(function(){
+   $("a").mouseover(function(event){
+      $("#capa").addClass("clasecss");
+   });
+   $("a").mouseout(function(event){
+      $("#capa").removeClass("clasecss");
+   });
+});
+</script>  
+	<p>jkjakdlaj</p>
+
+
+
+<h2>this is test</h2>
+<!-- cla -->
+<script>
+function comprobarTpo(){
+
+    tipo = document.va.clave1.value
+    clave2 = document.va.clave2.value
+
+    if (clave1 == clave2)
+       alert("Las dos claves son iguales...\nRealizaríamos las acciones del caso positivo")
+    else
+       alert("Las dos claves son distintas...\nRealizaríamos las acciones del caso negativo")
+}
+</script>
+
+<script>
+function comprobarClave(){
+    clave1 = document.f1.clave1.value
+    clave2 = document.f1.clave2.value
+
+    if (clave1 == clave2)
+       alert("Las dos claves son iguales...\nRealizaríamos las acciones del caso positivo")
+    else
+       alert("Las dos claves son distintas...\nRealizaríamos las acciones del caso negativo")
+}
+</script>
+
+
+<h1>Validar si la contraseña y la repetición de la contraseña son iguales</h1>
+<br>
+Escribe una supuesta contraseña dos veces, una en cada campo, y pulsa el botón. Javascript te dirá si las dos son iguales.
+
+<br>
+<form action="" name="f1">
+Contraseña: <input type="password" name="clave1" size="20">
+<br>
+Repite contraseña: <input type="password" name="clave2" size="20">
+<br>
+<input type="button" value="Comprobar si son iguales" onClick="comprobarClave()">
+
+</form> 
+<style type="text/css">
+	.hola{
+		background-color: peru;
+	}
+	.jola{
+		background-color: blue;
+	}
+</style>
+
+
+<h2>jajajaj</h2>
+<select id="producto" onchange="ShowSelected();" name="producto">
+<option value="ja">Texto One</option>
+<option value="jo">Texto Two</option>
+</select>
+<input   id='hola'  type="text" name="hola"  >
+	<script type="text/javascript">
+function ShowSelected()
+{
+/* Para obtener el valor */
+var cod = document.getElementById("producto").value;
+	var d = document.getElementById("hola"); 
+if (cod == 'ja') {
+d.setAttribute("class", "hola");
+
+}else{
+	d.setAttribute("class", "jola");
+
+}
+
+}
+ 
+/* Para obtener el texto */
+/*var combo = document.getElementById("producto");
+var selected = combo.options[combo.selectedIndex].text;
+alert(selected);*/
+
+</script>
+
+
 	{% endblock %}

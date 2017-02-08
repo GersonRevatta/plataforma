@@ -2,7 +2,7 @@ from django.db import models
 import hashlib
 import datetime
 # Create your models here.
-
+  
 
 class usuario (models.Model):
 	STUDENT = 's'

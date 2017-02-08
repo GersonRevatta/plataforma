@@ -7,7 +7,7 @@ from django.shortcuts import  get_object_or_404
 from django.template.context_processors import csrf
 # Create your views here.
 from django.http import HttpResponse
-from almacen.models import Curso ,Document ,Tema
+from almacen.models import Curso ,Document ,Tema ,Categoria
 from django.core.mail import EmailMessage
 from django.contrib.auth.decorators import login_required
 import hashlib
@@ -20,6 +20,11 @@ from django.utils import timezone
 
 import random 
 from almacen.form import CursoForm,TemaForm,VideoForm,CommentForm,CategoriaForm
+#from urllib.parse import urlparse
+from urllib import parse 
+from urllib.parse import urlparse
+
+#from urlparse import parse urlparse_qs
 def registro(request): 
 	user=password=''
 	if request.POST:
@@ -133,12 +138,33 @@ def mostrarCurso(request):
 	
 
 def miscursos(request):
+	if request.POST:
+		frm=CursoForm(request.POST,request.FILES)
+		fr=CategoriaForm(request.POST)
+		if frm.is_valid() and fr.is_valid():
+			a = frm.save()
+			b=fr.save()
+			try:
+				a.usuario = usuario.objects.get(username=request.session['userr'])
+				a.categoria=Categoria.objects.get(id=b.id)
+
+			except KeyError:
+				pass
+			a.codigo = hashlib.md5(str(a.id).encode()).hexdigest()[:5]	
+			a.save()
+
+
+		
+		
+	fr = CategoriaForm()
+	frm = CursoForm()
 	try:
 		listar = usuario.objects.get(username=request.session['userr'])
 		alistar = Curso.objects.filter(usuario=listar)
 	except KeyError:
 		pass
-	return	render(request,'miscursos.html',{'alistar':alistar})	
+	context = {'alistar':alistar,'frm':frm,'fr':fr}	
+	return	render(request,'miscursos.html',context)	
 
 
 
@@ -156,6 +182,15 @@ def mostrar(request,codigo):
 			a.curso = get_object_or_404(Curso,codigo=codigo)
 			a.codigo=codigo
 			b.tema=get_object_or_404(Tema,id=a.id)
+			val=frm.cleaned_data['tipoArchivo']
+			value=frm.cleaned_data['docfile']
+			if 	val=='you':
+				qs = value.split('?')
+				video_id = parse.parse_qs(qs[1])['v'][0]
+			else:
+				qs = value.split('https://vimeo.com/')
+				video_id=qs[1]
+			b.docfile=video_id
 			a.save()
 			b.save()
 	
@@ -171,7 +206,7 @@ def mostrar(request,codigo):
 	frm = VideoForm()
 	fr = TemaForm()
 		
-	context = {'c':c,'frm':frm,'fr':fr,'lis':lis}
+	context = {'c':c,'frm':frm,'fr':fr,'lis':lis,'dato':dato}
 	#este es el objeto de Cursos
 	#c = Document.objects.filter(curso=dato)
 	#return HttpResponseRedirect(reverse('must',args=(a.codigo,)))
@@ -195,7 +230,7 @@ def contactomail(request):
 	if request.method == 'POST':
 		formulario = FormularioContacto(request.POST)
 		if formulario.is_valid():
-			asunto = 'Mensaje de la Aplicacion de django'
+			asunto = 'Mensaje de la Aplicacion de django de :'+formulario.cleaned_data['nombre']
 			mensaje = formulario.cleaned_data['mensaje']
 			mail = EmailMessage(asunto,mensaje,to=['jordyrevatta99@gmail.com'])
 			mail.send()

@@ -1,20 +1,43 @@
 from django import forms
 from .models import Curso , Tema , Video ,Comment ,Categoria
+
 #from .models import Cursos,Document,Comment
 
 class CursoForm(forms.ModelForm):
 	class Meta:
 		model=Curso
 		fields=['name','descripcion','imagen']
-
+		
+		widgets = {
+			'name' : forms.TextInput(attrs = {'placeholder': 'Nombre del Curso','class':'form-control'}),	
+			'descripcion' : forms.Textarea(attrs = {'placeholder': 'Detalles del Curso','rows':'2','class':'form-control'}),	
+			'imagen' : forms.FileInput(attrs = {'accept': 'image/gif, image/jpeg, image/png'}),
+		}
+		
+									
 class TemaForm(forms.ModelForm):
 	class Meta:
 		model=Tema
 		fields=['titulo','descripcion']
+		widgets = {
+			'titulo' : forms.TextInput(attrs = {'placeholder': 'Nombre del tema','class':'form-control'}),	
+			'descripcion' : forms.Textarea(attrs = {'placeholder': 'Detalles sobre el tema','rows':'2','class':'form-control'}),	
+		}
+
 class VideoForm(forms.ModelForm):
 	class Meta:
 		model=Video
-		fields=['filename','docfile']
+		fields=['filename','docfile','tipoArchivo','smart_phone_ownership']
+		widgets = {
+			'filename' : forms.TextInput(attrs = {'placeholder': 'Nombre del Archivo','class':'form-control'}),
+			'docfile':	forms.URLInput(attrs = {'placeholder': 'Ingrese la URL','class':'form-control','id':'enlace','pattern':'http://www\.youtube\.com\/(.+)|https://www\.youtube\.com\/(.+)'}),
+			#'tipoArchivo': forms.CharInput(widget=forms.RadioSelect, choices=Video.Type_CHOICES)
+			'tipoArchivo': forms.Select(attrs = {'onchange':'ShowSelectedd()','id':'tipoArchivo'}),
+			'smart_phone_ownership': forms.Select(attrs = {'name' : 'pos','id':'pos'}),
+			
+		
+		}
+
 class CategoriaForm(forms.ModelForm):
 	class Meta:
 		model=Categoria
@@ -29,6 +52,13 @@ class CommentForm(forms.ModelForm):
 	class Meta:
 		model = Comment
 		fields = ('user','email','body')
+		widgets = {
+			'user' : forms.TextInput(attrs = {'placeholder': 'Nombre de usuario','class':'form-control'}),
+			'email' : forms.TextInput(attrs = {'placeholder': 'Correo','class':'form-control'}),
+			'body' : forms.Textarea(attrs = {'placeholder': 'Ingresa un comentario','class':'form-control'}),
+			
+		
+		}
 
 class ReplyForm(forms.ModelForm):
 	class Meta:

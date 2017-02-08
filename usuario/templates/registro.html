@@ -2,7 +2,27 @@
 	{% block title %}Register{% endblock %}
 	{% block registro %}
 
+		<style>
 
+input[type=number]::-webkit-outer-spin-button,
+
+input[type=number]::-webkit-inner-spin-button {
+
+    -webkit-appearance: none;
+
+    margin: 0;
+
+}
+
+ 
+
+input[type=number] {
+
+    -moz-appearance:textfield;
+
+}
+
+</style>
 	<div class="formulario">
 		<form  method="post" >{% csrf_token %}
 				
@@ -62,6 +82,16 @@
 	</div>
 	
 
+<style type="text/css">
+  .footer {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  /* Set the fixed height of the footer here */
+  height: 60px;
+ 
+}
+</style>
 		
 			
 		
