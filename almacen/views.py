@@ -11,8 +11,10 @@ from django.shortcuts import  get_object_or_404
 from django.contrib.auth.decorators import login_required
 from .models import Curso , Tema , Video ,Comment,Categoria
 from .form import CursoForm,TemaForm,VideoForm,CommentForm,CategoriaForm
-
+from django.db.models import Q
 #from .models import Document
+#importando para la paginacion
+from django.core.paginator import Paginator ,EmptyPage ,PageNotAnInteger
 
 def creandoCursos(request):
 	if request.POST:
@@ -38,6 +40,24 @@ def creandoCursos(request):
 		
 	except :
 		pass
+
+	query = request.GET.get("q")
+	if query:
+		ls = ls.filter(
+			Q(name__startswith=query)|
+			Q(usuario__username__startswith=query)
+			).distinct()	
+
+	paginator = Paginator(ls,2)		
+	page_request_var = "page"
+	page = request.GET.get(page_request_var)
+	try:
+		ls = paginator.page(page)
+	except PageNotAnInteger:
+		ls = paginator.page(1)
+	except EmptyPage:
+		ls = paginator.page(paginator.num_pages)	
+		
 	context = {'frm':frm,'fr':fr,'lis':lis,'ls':ls}
 			
 
