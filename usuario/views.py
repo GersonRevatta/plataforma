@@ -23,7 +23,7 @@ from almacen.form import CursoForm,TemaForm,VideoForm,CommentForm,CategoriaForm
 #from urllib.parse import urlparse
 from urllib import parse 
 from urllib.parse import urlparse
-
+  
 #from urlparse import parse urlparse_qs
 def registro(request): 
 	user=password=''
@@ -31,8 +31,9 @@ def registro(request):
 		frm = FormularioRegistro(request.POST)
 		if frm.is_valid():
 			#verificacion de email
+			validarUsuario = usuario.verificacionUsername(user= request.POST['username'])
 			d=usuario.verificacionEmail(email= request.POST['email'])	
-			if d==False:
+			if d==False and validarUsuario==False:
 				#creacion del usuario
 				a= usuario.crear( user= request.POST['username'], password =request.POST['password'])
 				a.first_name = frm.cleaned_data['first_name']
@@ -40,14 +41,17 @@ def registro(request):
 				a.last_name =frm.cleaned_data['last_name']
 				a.dni=frm.cleaned_data['dni']
 				a.gender=frm.cleaned_data['gender']
+				#acceso  por 7 dias
+				a.acceso_free = datetime.datetime.today() + datetime.timedelta(7)
 				a.save()
 				salt = hashlib.sha1(str(random.random()).encode()).hexdigest()[:5]            
 				activation_key = hashlib.sha1((salt+a.email).encode()).hexdigest() 
 				key_expires = datetime.datetime.today() + datetime.timedelta(2)
-
 				#Obtener el nombre de usuario
-				user=usuario.objects.get(username=a.username)
-
+				#validarUsuario = usuario.verificacionUsername(user= request.POST['username'])
+				user=usuario.objects.get(username=a.username)    				
+    				
+				#user=usuario.objects.get(username=a.username)
 				# Crear el perfil del usuario                                                                                                                                 
 				new_profile = UserProfile(user=user, activation_key=activation_key, key_expires=key_expires)
 				new_profile.save()
@@ -66,10 +70,11 @@ def registro(request):
 	else:   
 		frm = FormularioRegistro()
 
-	args = {}
-	args.update(csrf(request))
-	args['frm'] = frm
-	return render (request,'registro.html',args)
+	#args = {}
+	#args.update(csrf(request))
+	#args['frm'] = frm
+	context = {'frm':frm}
+	return render (request,'registro.html',context)
 
 def loguin(request):
 	user=password=''
@@ -79,14 +84,25 @@ def loguin(request):
 			c  =	usuario.verificar( user= request.POST['username'], password =request.POST['password'])
 
 			if c==True:
+				#para poder loguearse verifica
+				#
+				#
+				preAcceso = usuario.objects.get(username= request.POST['username'])
+				aeiou = preAcceso.id
+				pre = UserProfile.objects.get(user=aeiou)
+				if pre.activacion_url != 'True':
+					
+					if preAcceso.acceso_free > timezone.now():
 				
-				z = request.POST['username']		
-					#return render(request,test.html,args)
-				request.session['userr']=z	
-				
+					
+						z = request.POST['username']		
+							#return render(request,test.html,args)
+						request.session['userr']=z	
+					
 
 				#return HttpResponseRedirect(reverse('create'))
 				return HttpResponseRedirect(reverse('index'))
+
 
 			else:	
 				
@@ -220,12 +236,6 @@ r = reporte.objects.get(codigo=codigo)
 #verificado
 
 
-
-
-
-
-
-
 def contactomail(request):
 	if request.method == 'POST':
 		formulario = FormularioContacto(request.POST)
@@ -250,6 +260,10 @@ def register_confirm(request, activation_key):
 
 	# Verifica que el token de activación sea válido y sino retorna un 404
 	user_profile = get_object_or_404(UserProfile, activation_key=activation_key)
+	#user_profile.activacion_url = True
+	
+	var = UserProfile.activacion(asd=user_profile.activacion_url)
+	var.save()
 
 	# verifica si el token de activación ha expirado y si es así renderiza el html de registro expirado
 	if user_profile.key_expires < timezone.now():
@@ -258,4 +272,4 @@ def register_confirm(request, activation_key):
 	user = user_profile.user
 	user.is_active = True
 	user.save()
-	return HttpResponse('verificacion de cuenta corecta')
+	return HttpResponse('verificacion de cuenta correcta')

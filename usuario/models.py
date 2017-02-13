@@ -17,6 +17,12 @@ class usuario (models.Model):
 	last_name =models.CharField(max_length=30)
 	dni =models.CharField(max_length=8)
 	gender = models.CharField(choices=GENDER_CHOICES,default=STUDENT, max_length=128)
+	#acceso_free = models.DateTimeField(default=datetime.date.today)
+	acceso_free= models.DateTimeField(auto_now_add=True)
+	acceso = models.CharField(max_length=5)
+#
+#
+#
 	'''
 	tipo =models.CharField(max_length=16)
 	''' 
@@ -48,10 +54,24 @@ class usuario (models.Model):
 		except 	 usuario.DoesNotExist:
 			return False   
 	
+	def verificacionUsername(user):
+		try:
+			veris = usuario.objects.get(username=user)
+
+		except 	 usuario.DoesNotExist:
+			return False   
+
 class UserProfile(models.Model):
     user = models.OneToOneField(usuario)
     activation_key = models.CharField(max_length=40, blank=True)
-    key_expires = models.DateTimeField(default=datetime.date.today())
+    key_expires = models.DateTimeField(default=datetime.date.today)
+    activacion_url = models.CharField(max_length=5,null=True)    
+
+    def activacion(asd):
+    	ve = UserProfile.objects.get(activacion_url=asd)
+    	ve.activacion_url =True
+    	return ve
+	
 
     def __str__(self):
         return self.user.username
