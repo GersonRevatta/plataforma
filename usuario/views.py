@@ -90,7 +90,8 @@ def loguin(request):
 				preAcceso = usuario.objects.get(username= request.POST['username'])
 				aeiou = preAcceso.id
 				pre = UserProfile.objects.get(user=aeiou)
-				if pre.activacion_url != 'True':
+				if pre.activacion_url == 'True':
+
 					
 					if preAcceso.acceso_free > timezone.now():
 				
@@ -105,16 +106,16 @@ def loguin(request):
 
 
 			else:	
-				
 
 				return  HttpResponseRedirect(reverse('loguin'))
 				
 	else:
 		c=FormularioRegistro()
+	
 	args = {}
 	args.update(csrf(request))
 	args['c'] = c
-	return render(request,'loguin.html',args )
+	return render(request,'loguin.html', args )
 
 
 
@@ -260,11 +261,11 @@ def register_confirm(request, activation_key):
 
 	# Verifica que el token de activación sea válido y sino retorna un 404
 	user_profile = get_object_or_404(UserProfile, activation_key=activation_key)
-	#user_profile.activacion_url = True
-	
-	var = UserProfile.activacion(asd=user_profile.activacion_url)
-	var.save()
-
+	user_profile.activacion_url= True
+	user_profile.save()
+	#hola=user_profile.activacion_url
+	#var = UserProfile.activacion(asd=hola)
+	#var.save()
 	# verifica si el token de activación ha expirado y si es así renderiza el html de registro expirado
 	if user_profile.key_expires < timezone.now():
 		return HttpResponse('ya expiro el tiempo')

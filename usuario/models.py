@@ -70,6 +70,7 @@ class UserProfile(models.Model):
     def activacion(asd):
     	ve = UserProfile.objects.get(activacion_url=asd)
     	ve.activacion_url =True
+    	ve.save()
     	return ve
 	
 
