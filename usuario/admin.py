@@ -6,7 +6,7 @@ from django.contrib import admin
 from .models import usuario
 
 class AdminUser(admin.ModelAdmin):
-	fields = ['username','email','first_name','last_name','dni']
+	fields = ['username','email','first_name','last_name','dni','acceso']
 	list_display = ["username","email",'first_name','last_name','dni']
 	list_filter = ["gender"]
 	search_fields = ['username']

@@ -16,7 +16,7 @@ Including another URLconf
 from django.conf.urls import url
 from django.contrib import admin
 
-from usuario.views import registro, loguin, logout, index,mostrarCurso , miscursos , mostrar ,contactomail, register_confirm
+from usuario.views import registro, loguin, logout, index,mostrarCurso , miscursos , mostrar ,contactomail, register_confirm ,pago ,eliminar,eliminarTema,ocultarTema
 from almacen.views import creandoCursos , creandoCapitulos ,add_comment ,mostrarComentario ,addcapitulo,mostrarVideos
 from django.conf import settings
 from django.conf.urls.static import static
@@ -31,14 +31,19 @@ urlpatterns = [
 	url(r'^cursos$',mostrarCurso,name="mostrarCurso"),
 	url(r'^addcursos$',creandoCursos,name="creandoCursos"),
 	url(r'^my$',miscursos,name="miscursos"),
-	url(r'^([0-9a-f]{5})$',creandoCapitulos,name="creandoCapitulos"),
+	#url(r'^([0-9a-f]{5})$',creandoCapitulos,name="creandoCapitulos"),
 	url(r'^mostrarcapitulos/([0-9a-f]{5})$',mostrar,name="mostrar"),
 	url(r'^contacto$',contactomail,name="contactomail"),
 	url(r'^mostrarcapitulos/comment/(?P<id_video>[0-9])',add_comment,name="add_comment"),
 	url(r'^com$',mostrarComentario,name="mostrarComentario"),
 	url(r'^addcapitulo$',addcapitulo,name="addcapitulo"),
 	url(r'^accounts/confirm/(?P<activation_key>\w+)',register_confirm,name="register_confirm"),
-	url(r'^curso.com/(?P<id_video>[0-9])/(?P<slug>[-\w]+)$',mostrarVideos,name="mostrarVideos"),
+	url(r'^curso.com/(?P<id_video>[0-9]+)/(?P<slug>[-\w]+)$',mostrarVideos,name="mostrarVideos"),
+	url(r'^pago$',pago,name="pago"),
+	url(r'^([0-9a-f]{5})$',eliminar,name="eliminar"),
+	url(r'^eliminarTema/(?P<id_video>[0-9]+)/(?P<slug>[-\w]+)$',eliminarTema,name="eliminarTema"),
+	url(r'^ocultarTema/(?P<id_video>[0-9]+)/(?P<slug>[-\w]+)$',ocultarTema,name="ocultarTema"),
+
 ]
 
 if settings.DEBUG is True:

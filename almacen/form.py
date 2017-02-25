@@ -3,22 +3,27 @@ from .models import Curso , Tema , Video ,Comment ,Categoria
 
 #from .models import Cursos,Document,Comment
 
+ 
+
+
 class CursoForm(forms.ModelForm):
 	class Meta:
 		model=Curso
 		fields=['name','descripcion','imagen']
 		
 		widgets = {
-			'name' : forms.TextInput(attrs = {'placeholder': 'Nombre del Curso','class':'form-control'}),	
+			'name' : forms.TextInput(attrs = {'placeholder': 'Nombre del Curso','class':'form-control','style':'text-transform:uppercase','onkeyup':'javascript:this.value=this.value.toUpperCase();'}),	
 			'descripcion' : forms.Textarea(attrs = {'placeholder': 'Detalles del Curso','rows':'2','class':'form-control'}),	
 			'imagen' : forms.FileInput(attrs = {'accept': 'image/gif, image/jpeg, image/png'}),
 		}
-		
+
+             
+	
 									
 class TemaForm(forms.ModelForm):
 	class Meta:
 		model=Tema
-		fields=['titulo','descripcion']
+		fields=['titulo','descripcion','accesoTema']
 		widgets = {
 			'titulo' : forms.TextInput(attrs = {'placeholder': 'Nombre del tema','class':'form-control'}),	
 			'descripcion' : forms.Textarea(attrs = {'placeholder': 'Detalles sobre el tema','rows':'2','class':'form-control'}),	
@@ -27,7 +32,7 @@ class TemaForm(forms.ModelForm):
 class VideoForm(forms.ModelForm):
 	class Meta:
 		model=Video
-		fields=['filename','docfile','tipoArchivo','smart_phone_ownership']
+		fields=['filename','docfile','tipoArchivo']
 		widgets = {
 			'filename' : forms.TextInput(attrs = {'placeholder': 'Nombre del Archivo','class':'form-control'}),
 			'docfile':	forms.URLInput(attrs = {'placeholder': 'Ingrese la URL','class':'form-control','id':'enlace','pattern':'http://www\.youtube\.com\/(.+)|https://www\.youtube\.com\/(.+)'}),
@@ -51,10 +56,9 @@ class Formcapitulos(forms.ModelForm):
 class CommentForm(forms.ModelForm):
 	class Meta:
 		model = Comment
-		fields = ('user','email','body')
+		fields = ['body']
 		widgets = {
-			'user' : forms.TextInput(attrs = {'placeholder': 'Nombre de usuario','class':'form-control'}),
-			'email' : forms.TextInput(attrs = {'placeholder': 'Correo','class':'form-control'}),
+
 			'body' : forms.Textarea(attrs = {'placeholder': 'Ingresa un comentario','class':'form-control'}),
 			
 		

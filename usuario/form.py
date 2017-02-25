@@ -41,4 +41,3 @@ class FormularioContacto(forms.Form):
 	mensaje = forms.CharField()
 '''
 
- 

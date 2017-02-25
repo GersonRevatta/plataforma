@@ -16,6 +16,7 @@ from django.db.models import Q
 #importando para la paginacion
 from django.core.paginator import Paginator ,EmptyPage ,PageNotAnInteger
 
+@login_required(login_url='/sesion')
 def creandoCursos(request):
 	if request.POST:
 		frm=CursoForm(request.POST,request.FILES)
@@ -48,7 +49,7 @@ def creandoCursos(request):
 			Q(usuario__username__startswith=query)
 			).distinct()	
 
-	paginator = Paginator(ls,2)		
+	paginator = Paginator(ls,30)		
 	page_request_var = "page"
 	page = request.GET.get(page_request_var)
 	try:
@@ -163,7 +164,7 @@ def addcapitulo(request):
 	#frm=VideoForm()
 	#fr=TemaForm()
 	
-
+ 
 	
 def creandoCapitulos(request,codigo):
 	if request.POST:
@@ -272,21 +273,22 @@ def mostrarVideos(request,id_video, slug ):
 	if request.POST:
 		form = CommentForm(request.POST)
 		if form.is_valid() :
+
 			b=form.save()
-			
+			comment = usuario.objects.get(username=request.session['userr'])
+			b.user = comment.username
+			b.email = comment.email
 			a= Tema.objects.filter(codigo=c.codigo)
 			for repo in a:
 				b.tema = get_object_or_404(Tema,id=repo.id)
-			
+				
 			b.save()    
 	form=CommentForm()	
 	d = Tema.objects.filter(codigo=c.codigo)
 	vi = Video.objects.get(id=id_video)
-	co=Comment.objects.filter(tema=vi.id)
+	co = Comment.objects.filter(tema=vi.id)
 	context = {'c':c,'d':d,'vi':vi,'form':form,'co':co}
 	return render(request,'video.html',context)
 
 
-
- 
 

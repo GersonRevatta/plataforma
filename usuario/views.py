@@ -23,8 +23,11 @@ from almacen.form import CursoForm,TemaForm,VideoForm,CommentForm,CategoriaForm
 #from urllib.parse import urlparse
 from urllib import parse 
 from urllib.parse import urlparse
-  
+from django.core.urlresolvers import reverse
 #from urlparse import parse urlparse_qs
+
+from django.db.models.functions import Upper
+
 def registro(request): 
 	user=password=''
 	if request.POST:
@@ -90,17 +93,22 @@ def loguin(request):
 				preAcceso = usuario.objects.get(username= request.POST['username'])
 				aeiou = preAcceso.id
 				pre = UserProfile.objects.get(user=aeiou)
+				if preAcceso.acceso == 'True':
+					z = request.POST['username']		
+							#return render(request,test.html,args)
+					request.session['userr']=z	
+					return HttpResponseRedirect(reverse('index'))
+						
 				if pre.activacion_url == 'True':
-
-					
 					if preAcceso.acceso_free > timezone.now():
-				
 					
 						z = request.POST['username']		
 							#return render(request,test.html,args)
 						request.session['userr']=z	
-					
-
+					else:
+						context = {'c':c}
+						return render(request,'prueba_terminada.html',context)
+						 
 				#return HttpResponseRedirect(reverse('create'))
 				return HttpResponseRedirect(reverse('index'))
 
@@ -115,7 +123,8 @@ def loguin(request):
 	args = {}
 	args.update(csrf(request))
 	args['c'] = c
-	return render(request,'loguin.html', args )
+	plantilla = 'loguin.html'
+	return render(request,plantilla, args )
 
 
 
@@ -128,16 +137,56 @@ def logout(request):
 	
 
 
+def pago(request):
+	lis = usuario.objects.get(username=request.session['userr'])
+	lis.acceso = True
+	lis.save()
+	return  HttpResponseRedirect(reverse('index'))
+	
+def eliminar(request , codigo):
+	eliminar = Curso.objects.get(codigo=codigo)
+	eliminar.delete()
+	return  HttpResponseRedirect(reverse('miscursos'))
+	
+	
+def eliminarTema(request,id_video, slug ):
+	eliminar = Tema.objects.get(id=id_video)
+	a=eliminar.curso.codigo
+	eliminar.delete()
+	return  HttpResponseRedirect(reverse('mostrar', args=(a,)))
+	
+def ocultarTema(request,id_video,slug):
+	ocultar = Tema.objects.get(id=id_video)
+	a=ocultar.curso.codigo
+	if  ocultar.accesoTema == 'mos':
+		ocultar.accesoTema = 'ocul'
+		
+		#return HttpResponse('este tema se  ocultara algo')
+		
+	elif  ocultar.accesoTema == 'ocul':
+		ocultar.accesoTema = 'mos'
+		
+		#return HttpResponse('este tema se mostrara')
+	ocultar.save()	
+	return  HttpResponseRedirect(reverse('mostrar', args=(a,)))
+'''
+MOSTRAR ='mos'
+	OCULTO ='ocul'
+'''	
+		 
+
+	
 
 def index(request):
-	frm = FormularioRegistro()
-
-	args = {}
-	args.update(csrf(request))
-
-	args['frm'] = frm
+	try:
+		user = usuario.objects.get(username=request.session['userr'])
+		a = user
+	except KeyError:	
+		frm = FormularioRegistro()
+		a = frm
+	context= {"a":a}
 	
-	return render (request,'index.html',args)
+	return render (request,'index.html',context)
 
 #^verificado
 
@@ -154,6 +203,7 @@ def mostrarCurso(request):
 	return render(request,'cursos.html', {'ls':ls})	
 	
 
+@login_required(login_url='/sesion')
 def miscursos(request):
 	if request.POST:
 		frm=CursoForm(request.POST,request.FILES)
@@ -169,9 +219,6 @@ def miscursos(request):
 				pass
 			a.codigo = hashlib.md5(str(a.id).encode()).hexdigest()[:5]	
 			a.save()
-
-
-		
 		
 	fr = CategoriaForm()
 	frm = CursoForm()
@@ -188,7 +235,7 @@ def miscursos(request):
 
 
 #verificando
-#@login_required(login_url='/sesion')
+@login_required(login_url='/sesion')
 def mostrar(request,codigo):
 	if 	request.POST:
 		frm=VideoForm(request.POST,request.FILES)
@@ -229,7 +276,7 @@ def mostrar(request,codigo):
 	#return HttpResponseRedirect(reverse('must',args=(a.codigo,)))
 	#return render_to_response('receta.html',{'receta':dato,'comentarios':comentarios}, context_instance=RequestContext(request))
 	return	render(request,'cursoAlgo.html',context)
-'''  
+'''   
 r = reporte.objects.get(codigo=codigo)
 
 	return render (request,'hola.html', {'reporte': r})

@@ -5,7 +5,7 @@
 				
 		          <div class="inner cover">
 		            <h1 class="cover-heading"> {{ c.curso }}{{ c.titulo }}{{ c.name }}Bienvenido usuario : <b>{{ request.session.userr  }}</b></h1>
-		            <p class="lead">Al curso de  {{  c.name  }}
+		            <p class="lead">Al curso de  pos afd {{  c.name  }}
 		            
 		            </p>
 		            <p class="lead">
@@ -43,30 +43,88 @@ function comprobarTipo(){
 	}
 </style>  	
 	          		
-					<div class="container">
+					
+
+{%  if lis.gender == 't' and dato.usuario.username ==  request.session.userr %}     	
+					<!-- test -->		
+				<div class="panel panel-default">
+		  <!-- Default panel contents -->
+		  <div class="panel-heading text-center "><b>{{ dato.name }}</b></div>
+		  <div class="panel-body">
+		  	<h4>Concepto sd:</h4>
+		    <p> {{ dato.descripcion }} </p>
+		  </div>
+
+		  <!-- Table -->
+		  <table    class="table table-striped">
+		   	<tr>
+		   		<td>&nbsp;&nbsp;&nbsp;</td>
+		   		
+		   		<td> <b> Nombre Curso</b></td>
+		   		<td> <b>Ocultar</b> </td>
+		   		<td> <b>Eliminar</b></td>
+		   	</tr>
+		   	 	{% for lista in c %}
+		   	<tr>
+		   			<td> &nbsp;</td>
+		   			
+		   			<td><a  href="#" class='text-center btn btn-default'  onclick="window.location.href='/curso.com/{{ lista.id  }}/{{lista.slug}}'"
+												          	>{{ lista.titulo }}</a></td>
+				{% if lista.accesoTema == 'mos' %}
+		   			<td><a  href="#" class=' btn btn-default text-center '  onclick="window.location.href='/ocultarTema/{{ lista.id  }}/{{lista.slug}}'"
+														          	>Ocultar Tema<span class="glyphicon glyphicon-ok"></span></a></td>
+
+				{% else %}
+		   			<td><a  href="#" class=' btn btn-default text-center '  onclick="window.location.href='/ocultarTema/{{ lista.id  }}/{{lista.slug}}'"
+														          	>Mostrar Tema {{ lista. }}<span class="glyphicon glyphicon-ok"></span></a></td>
+				
+				{% endif %}										          	
+
+					<td><a  href="#" class='text-center btn btn-default'  onclick="window.location.href='/eliminarTema/{{ lista.id  }}/{{lista.slug}}'"
+														          	>Eliminar <span class="glyphicon glyphicon-ok"></span></a></td>
+		   	</tr>
+		   		{% endfor %}	
+		  </table>
+		</div>
+{% else %}
+<!-- Para estudiantes -->
+		<div class="container">
 						
 						  <div class="panel panel-default">
 						  <!-- Default panel contents -->
 						  	  <div class="panel-heading text-center"> <b> {{ dato.name }}</b>  </div>
 							  <div class="panel-body">
 							  <h4>Concepto:</h4>
-							    <p>{{ dato.descripcion }}</p>
+							    <p>{{ dato.descripcion }}   </p>
 							  </div>
 
 						  <!-- List group -->
 
 						<div class="list-group">
 	   	{% for lista in c %}
+							<!--
 							<a  href="#" class='text-center list-group-item'  onclick="window.location.href='/curso.com/{{ lista.id  }}/{{lista.slug}}'"
 				          	>{{ lista.titulo }}</a>
-						  
-	       {% endfor %}
+				   			-->
+				   			<!-- List group -->
+								  <ul class="nav nav-pills nav-stacked">
+								  			{% if lista.accesoTema == 'mos' %}
+								    				<li>
+								    					
+												   			<a  href="#" class='text-center list-group-item'  onclick="window.location.href='/curso.com/{{ lista.id  }}/{{lista.slug}}'"
+												          	>{{ lista.titulo }} </a>
+								    				</li>
+								    		{%  endif %}		
+														  
+										
+	    {% endfor %}
+								  </ul>
 						</div>
 
-						</div>	
+  						</div>	
 					</div>
-
-
+	
+{% endif %}
 	          	<style type="text/css">
 	          		.go-video{
 	          			height:500px;
@@ -136,9 +194,10 @@ function comprobarTipo(){
 						</td>
 					</tr>
 					<tr>
+						<td> Mostrar al Publico ?</td>
 						<td>
-					{{ frm.smart_phone_ownership }}
-						{{ frm.smart_phone_ownership.errors }}
+					{{ fr.accesoTema }}
+						{{ fr.accesoTema.errors }}
 							
 						</td>
 					</tr>

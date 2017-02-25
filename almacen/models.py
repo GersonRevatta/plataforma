@@ -1,10 +1,10 @@
 from django.db import models
 from usuario.models import usuario
-# Create your models here.
+# Create your models here. 
 from django.core.urlresolvers import reverse
 from django.template import defaultfilters
 from django.template.defaultfilters import slugify
-
+ 
 class Categoria(models.Model):
 	ANIME ='ani'
 	VIRTUALIZACION ='vir'
@@ -15,7 +15,7 @@ class Categoria(models.Model):
 	(PROGRAMACION,'programacion'))
 	nombre = models.CharField(choices=CATEGORIES_CHOICES,default=ANIME, max_length=100)
 
-
+ 
 class Curso(models.Model):
 	categoria= models.ForeignKey(Categoria,null=True, blank=True)
 	name = models.CharField(max_length=100)
@@ -23,6 +23,12 @@ class Curso(models.Model):
 	usuario = models.ForeignKey(usuario,null=True, blank=True)
 	imagen = models.ImageField(upload_to='imagenes/')
 	codigo = models.CharField(max_length=5)
+	ACTIVO ='act'
+	PENDIENTE ='pen'
+	Type_CHOICES = (
+	(ACTIVO,'activo'),
+	(PENDIENTE,'pendiente'))
+	accesoCurso = models.CharField(choices=Type_CHOICES,default=PENDIENTE, max_length=100)
 
 class Tema(models.Model):
 	titulo = models.CharField(max_length=100)
@@ -30,6 +36,13 @@ class Tema(models.Model):
 	descripcion = models.TextField()
 	curso = models.ForeignKey(Curso,null=True, blank=True)
 	slug = models.SlugField(max_length=100)
+	MOSTRAR ='mos'
+	OCULTO ='ocul'
+	Type_CHOICES = (
+	(MOSTRAR,'mostar'),
+	(OCULTO,'oculto'))
+	accesoTema = models.CharField(choices=Type_CHOICES,default=MOSTRAR, max_length=100)
+	
 	def save(self, *args, **kwargs):
 		self.slug = defaultfilters.slugify(self.titulo)
 		super(Tema, self).save(*args, **kwargs)
@@ -48,21 +61,6 @@ class Video(models.Model):
 	(VIMEO,'vimeo'),
 	(YOUTUBE,'youtube'))
 	tipoArchivo = models.CharField(choices=Type_CHOICES,default=YOUTUBE, max_length=100)
-
-	YES_SMARTPHONE = 'Yes'
-	NO_SMARTPHONE = 'No'
-
-
-	SMART_PHONE_OWNERSHIP = (
-		(YES_SMARTPHONE, 'Yes'),
-		(NO_SMARTPHONE, 'No'),
-			   )    
-	smart_phone_ownership = models.CharField(
-		null=True, max_length=100,
-		default=YES_SMARTPHONE, 
-		choices=SMART_PHONE_OWNERSHIP, verbose_name='Do you own a Smartphone?')
-
-	
 
  
 

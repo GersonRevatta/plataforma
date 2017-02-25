@@ -41,27 +41,25 @@
 	       			}
 	       		</style>
 	          <div class="row">
-			          {% for i in ls  %}
-		 	          
- 
-				<div  id='aaa' class="btn btn-default" >
-						
-				          	<div class="col-md-5" style="
-				          	background-image: url('media/{{i.imagen}}');
-				          	background-size: 100% 100%;
-				          	width: 250px;
-				          	height: 240px;
-				          	">
-				          	
-				          	<a class='btn btn-danger' href="#" onclick="window.location.href='/{{i.codigo}}'"
-				          	>Mostrar</a>
-				          	<a class='btn btn-danger' href="#" onclick="window.location.href='mostrarcapitulos/{{i.codigo}}'"
-				          	>Mostrar 2 pt</a>
-				          	</div>
-				   </div>
+			          {% for i in ls  %}	 	          
 				
-						
-
+			 				{% if i.accesoCurso == 'act' %}
+							<div  id='aaa' class="btn btn-default"  onclick="window.location.href='mostrarcapitulos/{{i.codigo}}'">
+									
+							          	<div class="col-md-5" style="
+							          	background-image: url('media/{{i.imagen}}');
+							          	background-size: 100% 100%;
+							          	width: 250px;
+							          	height: 240px;
+							          	">
+							          	<!-- 
+							          	<a class='btn btn-danger' href="#" onclick="window.location.href='mostrarcapitulos/{{i.codigo}}'"
+							          	> Mostrar </a>
+							          	-->
+							          	</div>
+							   </div>
+							{% endif %}
+				
 						{% endfor %}
 				</div>
 	          </div>
